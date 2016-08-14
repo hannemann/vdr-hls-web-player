@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VDR HLS Stream</title>
+
+    <script src="/js/hls.js"></script>
+    <script>
+
+        window.addEventListener('load', function () {
+            window.vdrHls = new VDRHls();
+            window.streamControl = new StreamControl();
+        });
+
+        var VDRHls = function () {
+
+            this.video = document.querySelector('video');
+            this.preset = this.presets[this.defaultPreset];
+        };
+
+        VDRHls.prototype.baseUrl = 'http://xmlapi.hannemann.lan/hls/stream.m3u8';
+
+//        VDRHls.prototype.defaultPreset = 'nvmid';
+        VDRHls.prototype.defaultPreset = 'mid';
+
+        VDRHls.prototype.presets = {
+            "mid" : "MID",
+            "nvmid" : "NVENC_MID"
+        };
+
+        VDRHls.prototype.defaultChannel = 'Das Erste HD';
+
+        VDRHls.prototype.channels = {
+            "Das Erste HD" : "C-1-1051-11100",
+            "SWR Fernsehen RP HD" : "C-1-1051-10304",
+            "WDR Köln HD" : "C-1-1051-28325",
+            "AXN HD" : "C-61441-10015-50023"
+        };
+
+        /**
+         * retrieve HLS Controller instance
+         * @return {Hls|boolean}
+         */
+        VDRHls.prototype.getHlsController = function () {
+
+            this.controller = new Hls();
+            if (Hls.isSupported()) {
+                return this.controller;
+            }
+
+            return false;
+        };
+
+        VDRHls.prototype.stop = function () {
+
+            this.video.pause();
+            if (this.controller) {
+                this.controller.detachMedia();
+                this.controller.destroy();
+            }
+
+        };
+
+        VDRHls.prototype.play = function (channel) {
+
+            var src;
+
+            src = this.getSource(channel);
+
+            if (this.controller) {
+                this.stop();
+            }
+
+            if (this.getHlsController()) {
+                this.addObserver();
+                this.controller.loadSource(src);
+                this.controller.attachMedia(this.video);
+            }
+        };
+
+        VDRHls.prototype.getSource = function (channel) {
+
+            var url = [
+                    this.baseUrl
+            ];
+
+            channel = channel ? this.channels[channel] : this.channels[this.defaultChannel];
+
+            url.push(this.getParameters(channel));
+
+            return url.join('?');
+        };
+
+        VDRHls.prototype.getParameters = function (channel) {
+
+            return [
+                    "chid=" + channel,
+                    "preset=" + this.preset
+            ].join('&');
+        };
+
+        VDRHls.prototype.setPreset = function (preset) {
+
+            if ("undefined" !== typeof this.presets[preset]) {
+                this.preset = this.presets[preset];
+            }
+        };
+
+        VDRHls.prototype.addObserver = function () {
+
+            this.controller.on(Hls.Events.MANIFEST_PARSED,function() {
+                this.video.play();
+            }.bind(this));
+        };
+
+
+        /**
+         * StreamControl
+         * @constructor
+         */
+        var StreamControl = function () {};
+
+        StreamControl.prototype.baseUrl = 'http://xmlapi.hannemann.lan/streamcontrol.xml';
+        StreamControl.prototype.removeParam = 'remove';
+
+        StreamControl.prototype.getStreams = function () {
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function (e) {
+
+                var result = e.target, streams;
+                if (4 === result.readyState && 200 === result.status) {
+                    streams = result.responseXML.getElementsByTagName('stream');
+                    console.log(streams[0].id);
+                }
+            };
+            xhr.open('GET', this.baseUrl);
+            xhr.send();
+        };
+    </script>
+
+
+</head>
+<body>
+
+<video id="video" controls></video>
+<br>
+<button type="button" onclick="vdrHls.play()">Das Erste HD</button>
+<button type="button" onclick="vdrHls.play('SWR Fernsehen RP HD')">SWR Fernsehen RP HD</button>
+<button type="button" onclick="vdrHls.play('WDR Köln HD')">WDR Köln HD</button>
+<button type="button" onclick="vdrHls.play('AXN HD')">AXN HD</button>
+<button type="button" onclick="vdrHls.stop()">Stop</button>
+</body>
+</html>
