@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VDR HLS Stream</title>
+
+    <!--<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>-->
+    <script src="/js/hls.js"></script>
+    <script>
+
+        var hls, video,
+//                src = 'http://www.streambox.fr/playlists/test_001/stream.m3u8',
+                src = 'http://xmlapi.hannemann.lan/hls/stream.m3u8?chid=C-1-1051-10304&preset=Mid',
+                src2 = 'http://xmlapi.hannemann.lan/hls/stream.m3u8?chid=C-1-1051-11100&preset=Mid',
+                src3 = 'http://xmlapi.hannemann.lan/hls/stream.m3u8?chid=C-1-1051-28325&preset=Mid';
+
+        window.addEventListener('load', function () {
+            if(Hls.isSupported()) {
+                video = document.querySelector('video');
+                hls = new Hls();
+                hls.loadSource(src);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                    video.play();
+                });
+            }
+        });
+
+        var VDRHls = function () {};
+
+        VDRHls.prototype.stop = function () {
+
+
+        };
+
+        var StreamControl = function () {};
+
+        StreamControl.prototype.baseUrl = 'http://xmlapi.hannemann.lan/streamcontrol.xml';
+        StreamControl.prototype.removeParam = 'remove';
+
+        StreamControl.prototype.getStreams = function () {
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function (e) {
+
+                var result = e.target;
+                if (4 === result.readyState && 200 === result.status) {
+                    debugger;
+                    console.log(e.responseXML);
+                }
+            };
+            xhr.open('GET', this.baseUrl);
+            xhr.send();
+        };
+
+        //        var streamControl = new StreamControl();
+    </script>
+
+
+</head>
+<body>
+
+<video id="video" controls></video>
+</body>
+</html>
