@@ -60,6 +60,7 @@ VDRHls.prototype.init = function () {
 
     this.video = document.querySelector('video');
     this.setPreset(this.defaultPreset);
+    this.urlParser = new UrlParser();
 
     this.initHandler();
 
@@ -87,19 +88,18 @@ VDRHls.prototype.addObserver = function () {
  * @return {Hls|boolean}
  */
 VDRHls.prototype.getHlsController = function () {
-var config = {
-  xhrSetup: function(xhr, url) {
-    if (url.split('.').pop() == 'm3u8') {
-      url = url.replace('m3u8', 'm3u8?rd=' + Math.random());
-      xhr.open('GET', url, true); 
-    }    
-    if (url.indexOf('?rd=') > -1) {
-      url = url.replace(/(rd=)[^\&]+/, 'rd=' + Math.random())
-      xhr.open('GET', url, true); 
-    }
-  }, 
-  debug:false
-}
+
+    var config = {debug:true};
+
+    config.xhrSetup = function(xhr, url) {
+
+        if (url.indexOf('m3u8') > -1) {
+            url = this.urlParser.addUniqueParam(url);
+        }
+        xhr.open('GET', url, true);
+
+    }.bind(this);
+
     if (Hls.isSupported()) {
         this.controller = new Hls(config);
         return this.controller;
@@ -228,17 +228,12 @@ VDRHls.prototype.addVideoObserver = function () {
 VDRHls.prototype.captureFrame = function () {
 
     var c = document.createElement('canvas'),
-        ctx = c.getContext('2d'),
-        url;
+        ctx = c.getContext('2d');
 
     c.width = this.video.offsetWidth;
     c.height = this.video.offsetHeight;
 
     ctx.drawImage(this.video, 0, 0, this.video.offsetWidth, this.video.offsetHeight);
 
-    url = c.toDataURL();
-    delete ctx;
-    delete c;
-
-    return url;
+    return c.toDataURL();
 };
