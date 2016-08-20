@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/css/video.css">
 
     <script src="/js/hls.js"></script>
+    <script src="/js/VDRXMLApi.js"></script>
+    <script src="/js/Channels.js"></script>
     <script src="/js/StreamControl.js"></script>
     <script src="/js/UrlParser.js"></script>
     <script src="/js/VDRHls.js"></script>
@@ -16,9 +18,8 @@
 
 
         window.addEventListener('load', function () {
-            window.vdrHls = new VDRHls();
-//            vdrHls.addVideoObserver();
-//            window.streamControl = new StreamControl();
+            vdrXmlApi = new VDRXMLApi();
+            vdrXmlApi.init();
         });
     </script>
 
@@ -28,23 +29,23 @@
 
 <video id="video" controls></video>
 <br>
-<button type="button" onclick="vdrHls.play('Das Erste')">Das Erste</button>
-<button type="button" onclick="vdrHls.play()">Das Erste HD</button>
-<button type="button" onclick="vdrHls.play('SWR Fernsehen RP HD')">SWR Fernsehen RP HD</button>
-<button type="button" onclick="vdrHls.play('WDR Köln HD')">WDR Köln HD</button>
-<button type="button" onclick="vdrHls.play('ProSieben HD')">ProSieben HD</button>
-<button type="button" onclick="vdrHls.play('ProSieben')">ProSieben</button>
-<button type="button" onclick="vdrHls.play('AXN HD')">AXN HD</button>
-<button type="button" onclick="vdrHls.play('AXN')">AXN</button>
-<button type="button" onclick="vdrHls.play('Disney Channel HD')">Disney Channel HD</button>
-<button type="button" onclick="vdrHls.stop()">Stop</button>
+<button type="button" onclick="vdrXmlApi.hls.play('Das Erste')">Das Erste</button>
+<button type="button" onclick="vdrXmlApi.hls.play()">Das Erste HD</button>
+<button type="button" onclick="vdrXmlApi.hls.play('SWR Fernsehen RP HD')">SWR Fernsehen RP HD</button>
+<button type="button" onclick="vdrXmlApi.hls.play('WDR Köln HD')">WDR Köln HD</button>
+<button type="button" onclick="vdrXmlApi.hls.play('ProSieben HD')">ProSieben HD</button>
+<button type="button" onclick="vdrXmlApi.hls.play('ProSieben')">ProSieben</button>
+<button type="button" onclick="vdrXmlApi.hls.play('AXN HD')">AXN HD</button>
+<button type="button" onclick="vdrXmlApi.hls.play('AXN')">AXN</button>
+<button type="button" onclick="vdrXmlApi.hls.play('Disney Channel HD')">Disney Channel HD</button>
+<button type="button" onclick="vdrXmlApi.hls.stop()">Stop</button>
 <br>
 Preset: <span id="preset"></span>
 <br>
-<button type="button" onclick="vdrHls.setPreset('high')">High</button>
-<button type="button" onclick="vdrHls.setPreset('mid')">Mid</button>
-<button type="button" onclick="vdrHls.setPreset('low')">Low</button>
-<button type="button" onclick="vdrHls.setPreset('nvmid')">Nvenc_mid</button>
-<button type="button" onclick="vdrHls.setPreset('nvlow')">Nvenc_low</button>
+<button type="button" onclick="vdrXmlApi.hls.setPreset('high')">High</button>
+<button type="button" onclick="vdrXmlApi.hls.setPreset('mid')">Mid</button>
+<button type="button" onclick="vdrXmlApi.hls.setPreset('low')">Low</button>
+<button type="button" onclick="vdrXmlApi.hls.setPreset('nvmid')">Nvenc_mid</button>
+<button type="button" onclick="vdrXmlApi.hls.setPreset('nvlow')">Nvenc_low</button>
 </body>
 </html>

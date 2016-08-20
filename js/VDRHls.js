@@ -3,17 +3,13 @@
  * @property {Hls} controller
  * @property {HTMLVideoElement} video
  */
-var VDRHls = function () {
+var VDRHls = function (api) {
 
+    this.api = api;
     this.init();
 };
 
-/**
- * base url
- * @type {string}
- */
-//VDRHls.prototype.baseUrl = 'http://xmlapi.hannemann.lan/hls/stream.m3u8';
-VDRHls.prototype.baseUrl = 'http://192.168.3.99:10080/';
+VDRHls.prototype = new VDRXMLApi();
 
 VDRHls.prototype.streamUrl = 'hls/stream.m3u8';
 
@@ -46,7 +42,7 @@ VDRHls.prototype.defaultChannel = 'Das Erste HD';
  * available channels
  * @type {{Das Erste HD: string, SWR Fernsehen RP HD: string, WDR Köln HD: string, AXN HD: string, Disney Channel HD: string}}
  */
-VDRHls.prototype.channels = {
+VDRHls.prototype.availableChannels = {
     "Das Erste" : "C-1-1101-28106",
     "Das Erste HD" : "C-1-1051-11100",
     "SWR Fernsehen RP HD" : "C-1-1051-10304",
@@ -58,23 +54,18 @@ VDRHls.prototype.channels = {
     "Disney Channel HD" : "C-61441-10016-50031"
 };
 
-VDRHls.prototype.errorLevels = {
-    "debugHls" : 8,
-    "debug" : 4,
-    "warn" : 2,
-    "info" : 1
-};
-
 VDRHls.prototype.init = function () {
 
+    this.className = 'VDRHls';
     this.video = document.querySelector('video');
     this.setPreset(this.defaultPreset);
     this.urlParser = new UrlParser();
     this.preservePoster = false;
     this.recoverTries = 0;
+    this.currentChannel = this.defaultChannel;
     this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
     this.initHandler().addVideoObserver();
-    this.info('VDRHls: initialized');
+    this.info('initialized');
     return this;
 };
 
@@ -83,7 +74,7 @@ VDRHls.prototype.initHandler = function () {
     this.mediaRecover = this.recoverMedia.bind(this);
     this.handleError = this.errorHandler.bind(this);
     this.start = this.startPlayback.bind(this);
-    this.info('VDRHls: handlers initialized');
+    this.info('handlers initialized');
 
     return this;
 };
@@ -95,19 +86,20 @@ VDRHls.prototype.addObserver = function () {
 
     this.controller.on(Hls.Events.MANIFEST_PARSED, this.start);
     this.controller.on(Hls.Events.ERROR, this.handleError);
-    this.info('VDRHls: observers added to controller');
+    this.info('observers added to controller');
 };
 
 VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('canplay', function () {
         this.info('Video: can play video now');
+        this.video.poster = this.api.channels.getLogoUrl(this.availableChannels[this.currentChannel]);
     }.bind(this));
 
     this.video.addEventListener('playing', function () {
         this.info('Video: Started Playback');
     }.bind(this));
-    this.info('VDRHls: observers added to video element');
+    this.info('observers added to video element');
 
     return this;
 };
@@ -120,7 +112,7 @@ VDRHls.prototype.getHlsController = function () {
 
     var config = {debug:(this.errorLevel & this.errorLevels.debugHls)>0};
     this.recoverTries = 0;
-    this.info('VDRHls: controller requested');
+    this.info('controller requested');
 
     config.xhrSetup = function(xhr, url) {
 
@@ -133,7 +125,7 @@ VDRHls.prototype.getHlsController = function () {
 
     if (Hls.isSupported()) {
         this.controller = new Hls(config);
-        this.info('VDRHls: controller initialized');
+        this.info('controller initialized');
         return this.controller;
     }
 
@@ -144,7 +136,7 @@ VDRHls.prototype.startPlayback = function () {
 
     this.video.play();
     //setTimeout(this.mediaRecover, 1500);
-    this.info('VDRHls: playback started');
+    this.info('playback started');
 };
 
 /**
@@ -161,7 +153,7 @@ VDRHls.prototype.stop = function () {
     if (!this.preservePoster) {
         this.video.poster = '';
     }
-    this.info('VDRHls: paused');
+    this.info('paused');
 };
 
 /**
@@ -171,25 +163,26 @@ VDRHls.prototype.stop = function () {
 VDRHls.prototype.play = function (channel) {
 
     var src;
-    this.info('VDRHls: play request');
+    this.info('play request');
 
+    this.currentChannel = channel;
     src = this.getSource(channel);
-    this.info('VDRHls: fetch video from %s', src);
+    this.info('fetch video from %s', src);
 
     if (this.controller) {
-        this.info('VDRHls: Video playing, set poster');
+        this.info('Video playing, set poster');
         this.video.poster = this.captureFrame();
         this.preservePoster = true;
-        this.info('VDRHls: cancel video');
+        this.info('cancel video');
         this.stop();
         this.preservePoster = false;
     }
     this.getHlsController();
     this.addObserver();
 
-    this.info('VDRHls: load src %s', src);
+    this.info('load src %s', src);
     this.controller.loadSource(src);
-    this.info('VDRHls: attach to video element');
+    this.info('attach to video element');
     this.controller.attachMedia(this.video);
 };
 
@@ -200,11 +193,10 @@ VDRHls.prototype.play = function (channel) {
 VDRHls.prototype.getSource = function (channel) {
 
     var url = [
-        this.baseUrl,
-        this.streamUrl
+        this.baseUrl + this.streamUrl
     ];
 
-    channel = channel ? this.channels[channel] : this.channels[this.defaultChannel];
+    channel = channel ? this.availableChannels[channel] : this.availableChannels[this.defaultChannel];
 
     url.push(this.getParameters(channel));
 
@@ -243,10 +235,10 @@ VDRHls.prototype.errorHandler = function (event, data) {
         switch(data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
                 // try to recover network error
-                this.warn("VDRHls: fatal network error encountered, try to recover");
+                this.warn("fatal network error encountered, try to recover");
                 if (this.recoverTries < 10) {
-                    this.info('VDRHls: trying to restart');
-                    this.debug('VDRHls: tried to startload %d times', this.recoverTries);
+                    this.info('trying to restart');
+                    this.debug('tried to startload %d times', this.recoverTries);
                     this.controller.startLoad();
                     this.recoverTries++;
                 } else {
@@ -259,7 +251,7 @@ VDRHls.prototype.errorHandler = function (event, data) {
                 break;
             default:
                 // cannot recover
-                this.warn("VDRHls: cannot recover from fatal error. Stopping now");
+                this.warn("cannot recover from fatal error. Stopping now");
                 this.stop();
                 break;
         }
@@ -268,7 +260,7 @@ VDRHls.prototype.errorHandler = function (event, data) {
 
 VDRHls.prototype.recoverMedia = function () {
 
-    this.info('VDRHls: calling controller to recover media');
+    this.info('calling controller to recover media');
     this.controller.recoverMediaError();
 };
 
@@ -283,25 +275,4 @@ VDRHls.prototype.captureFrame = function () {
     ctx.drawImage(this.video, 0, 0, this.video.offsetWidth, this.video.offsetHeight);
 
     return c.toDataURL();
-};
-
-VDRHls.prototype.info = function () {
-
-    if ("undefined" !== typeof window.console && (this.errorLevel & this.errorLevels.info) > 0) {
-        window.console.info.apply(window.console, arguments);
-    }
-};
-
-VDRHls.prototype.warn = function () {
-
-    if ("undefined" !== typeof window.console && (this.errorLevel & this.errorLevels.warn) > 0) {
-        window.console.warn.apply(window.console, arguments);
-    }
-};
-
-VDRHls.prototype.debug = function () {
-
-    if ("undefined" !== typeof window.console && (this.errorLevel & this.errorLevels.debug) > 0) {
-        window.console.debug.apply(window.console, arguments);
-    }
 };
