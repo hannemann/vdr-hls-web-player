@@ -13,7 +13,6 @@ Channels.Channel = function (channel) {
     this.name = channel.querySelector('name').innerHTML;
     this.logoUrl = channel.querySelector('logo').innerHTML;
     this.className = 'Channel';
-    this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
 };
 
 /**

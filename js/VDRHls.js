@@ -34,9 +34,7 @@ VDRHls.prototype.init = function () {
     this.setPreset(this.defaultPreset);
     this.urlParser = new UrlParser();
     this.preservePoster = false;
-    this.recoverTries = 0;
     this.currentChannel = null;
-    this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
     this.initHandler().addVideoObserver();
     this.info('initialized');
     return this;

@@ -21,7 +21,6 @@ Presets.prototype.init = function () {
 
     this.className = 'Presets';
     this.handleReadyState = this.readyStateHandler.bind(this);
-    this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
     this.getElement()
         .load();
 };

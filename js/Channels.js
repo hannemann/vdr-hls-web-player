@@ -31,7 +31,6 @@ Channels.prototype.init = function () {
 
     this.className = 'Channels';
     this.handleReadyState = this.readyStateHandler.bind(this);
-    this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
 
     this.getElement().load();
     this.info('initialized');

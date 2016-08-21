@@ -24,6 +24,7 @@ VDRXMLApi.prototype.presets = null;
  */
 VDRXMLApi.prototype.init = function () {
 
+    this.getErrorLevel();
     VDRXMLApi.prototype.hls = new VDRHls();
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.presets = new Presets();
@@ -109,6 +110,47 @@ VDRXMLApi.prototype.hasErrorLevel = function (errorLevel) {
 
     return "undefined" !== typeof this.errorLevels[errorLevel]
         && (this.errorLevel & this.errorLevels[errorLevel]) > 0;
+};
+
+/**
+ * determine error level from url
+ */
+VDRXMLApi.prototype.getErrorLevel = function () {
+
+    var debug = location.search.match(/(debug=[^&]+)/);
+
+    if (debug && debug.length > 0) {
+        debug = debug[0].split('=')[1];
+    }
+
+    switch (debug) {
+        case 'debugHls':
+            VDRXMLApi.prototype.errorLevel =
+                this.errorLevels.info
+                | this.errorLevels.warn
+                | this.errorLevels.debug
+                | this.errorLevels.debugHls
+            ;
+            break;
+        case 'debug':
+            VDRXMLApi.prototype.errorLevel =
+                this.errorLevels.info
+                | this.errorLevels.warn
+                | this.errorLevels.debug
+            ;
+            break;
+        case 'warn':
+            VDRXMLApi.prototype.errorLevel =
+                this.errorLevels.info
+                | this.errorLevels.warn
+            ;
+            break;
+        case 'info':
+            VDRXMLApi.prototype.errorLevel = this.errorLevels.info;
+            break;
+        default:
+            VDRXMLApi.prototype.errorLevel = 0;
+    }
 };
 
 /**
