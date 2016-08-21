@@ -5,7 +5,7 @@ Presets.prototype = new VDRXMLApi();
 /**
  * @type {string}
  */
-Presets.prototype.url = 'presets.ini';
+Presets.prototype.url = 'presets.ini?hls=1';
 
 /**
  * @type {string}
