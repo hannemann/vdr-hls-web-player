@@ -58,6 +58,7 @@ video {
 .preset {
     border: 1px solid grey;
     padding: 2px;
+    font-size: 10px;
 }
 
 .active {
