@@ -11,8 +11,8 @@ body {
 }
 
 .video-size {
-    box-sizing: border-box;
-    padding-top: calc(100% / 1.777777777);
+    width: 100%;
+    height: 50%;
     background: black;
     position: relative;
 }
@@ -22,7 +22,6 @@ body {
     left: 0;
     bottom: 0;
     right: 0;
-    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,4 +62,13 @@ video {
 
 .active {
     background-color: #dce3ff;
+}
+
+@media screen and (max-width: 640px) {
+
+    .video-size {
+        box-sizing: border-box;
+        padding-top: calc(100% / 1.777777777);
+        height: auto;
+    }
 }
