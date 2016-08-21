@@ -2,50 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
     <title>VDR HLS Stream</title>
 
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link rel="stylesheet" href="/css/video.css">
 
     <script src="/js/hls.js"></script>
     <script src="/js/VDRXMLApi.js"></script>
     <script src="/js/Channels.js"></script>
+    <script src="/js/Channels/Channel.js"></script>
+    <script src="/js/Presets.js"></script>
+    <script src="/js/Presets/Preset.js"></script>
     <script src="/js/StreamControl.js"></script>
     <script src="/js/UrlParser.js"></script>
     <script src="/js/VDRHls.js"></script>
+
     <script type="text/javascript">
-
-
-
-
         window.addEventListener('load', function () {
-            vdrXmlApi = new VDRXMLApi();
+
+            // Base url to be used with xmlApi
+            VDRXMLApi.prototype.baseUrl = 'http://192.168.3.99:10080/';
+
+            window.vdrXmlApi = new VDRXMLApi();
             vdrXmlApi.init();
         });
     </script>
-
-
 </head>
 <body>
 
-<video id="video" controls></video>
-<br>
-<button type="button" onclick="vdrXmlApi.hls.play('Das Erste')">Das Erste</button>
-<button type="button" onclick="vdrXmlApi.hls.play()">Das Erste HD</button>
-<button type="button" onclick="vdrXmlApi.hls.play('SWR Fernsehen RP HD')">SWR Fernsehen RP HD</button>
-<button type="button" onclick="vdrXmlApi.hls.play('WDR Köln HD')">WDR Köln HD</button>
-<button type="button" onclick="vdrXmlApi.hls.play('ProSieben HD')">ProSieben HD</button>
-<button type="button" onclick="vdrXmlApi.hls.play('ProSieben')">ProSieben</button>
-<button type="button" onclick="vdrXmlApi.hls.play('AXN HD')">AXN HD</button>
-<button type="button" onclick="vdrXmlApi.hls.play('AXN')">AXN</button>
-<button type="button" onclick="vdrXmlApi.hls.play('Disney Channel HD')">Disney Channel HD</button>
+<div class="video-size">
+    <div class="video-wrapper">
+        <video id="video" controls></video>
+    </div>
+</div>
+<div id="channels"></div>
 <button type="button" onclick="vdrXmlApi.hls.stop()">Stop</button>
-<br>
-Preset: <span id="preset"></span>
-<br>
-<button type="button" onclick="vdrXmlApi.hls.setPreset('high')">High</button>
-<button type="button" onclick="vdrXmlApi.hls.setPreset('mid')">Mid</button>
-<button type="button" onclick="vdrXmlApi.hls.setPreset('low')">Low</button>
-<button type="button" onclick="vdrXmlApi.hls.setPreset('nvmid')">Nvenc_mid</button>
-<button type="button" onclick="vdrXmlApi.hls.setPreset('nvlow')">Nvenc_low</button>
+<div id="presets"></div>
 </body>
 </html>

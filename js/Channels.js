@@ -1,32 +1,57 @@
-Channels = function () {
-    this.init();
-};
+/**
+ * @constructor
+ */
+Channels = function () {};
 
+/**
+ * @type {VDRXMLApi}
+ */
 Channels.prototype = new VDRXMLApi();
 
+/**
+ * @type {string}
+ */
 Channels.prototype.url = 'channels.xml';
 
+/**
+ * @type {string}
+ */
 Channels.prototype.method = 'GET';
 
+/**
+ * @type {{}}
+ */
+Channels.prototype.channelButtons = {};
+
+/**
+ * initialize
+ * @return {Channels}
+ */
 Channels.prototype.init = function () {
 
     this.className = 'Channels';
     this.handleReadyState = this.readyStateHandler.bind(this);
     this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
 
-    this.load();
+    this.getElement().load();
     this.info('initialized');
     return this;
 };
 
-Channels.prototype.load = function () {
+/**
+ * fetch element
+ * @return {Channels}
+ */
+Channels.prototype.getElement = function () {
 
-    var xhr = new XMLHttpRequest();
-    xhr.open(this.method, this.baseUrl + this.url);
-    xhr.onreadystatechange = this.handleReadyState;
-    xhr.send();
+    this.element = document.querySelector('#channels');
+    return this;
 };
 
+/**
+ * handle readyState change
+ * @param e
+ */
 Channels.prototype.readyStateHandler = function (e) {
 
     var response = e.target;
@@ -35,20 +60,50 @@ Channels.prototype.readyStateHandler = function (e) {
         this.info(response);
         this.channels = response.responseXML;
         this.info('channels loaded');
+        this.addChannels();
     }
 };
 
-Channels.prototype.hasChannels = function () {
+/**
+ * add channels
+ */
+Channels.prototype.addChannels = function () {
 
-    return this.channels !== null;
+    var channels = Array.prototype.slice.apply(this.channels.getElementsByTagName('channel'));
+    channels.forEach(function (channel) {
+
+        this.info('Adding channel %s', channel.querySelector('name').innerHTML);
+        this.channelButtons[channel.id] = new Channels.Channel(channel);
+        this.channelButtons[channel.id].init();
+
+    }.bind(this));
 };
 
+/**
+ * determine if we have channels
+ * @return {boolean}
+ */
+//Channels.prototype.hasChannels = function () {
+//
+//    return this.channels !== null;
+//};
+
+/**
+ * retrieve channel with given id
+ * @param {string} id
+ * @return {Element}
+ */
 Channels.prototype.getChannelById = function (id) {
 
     return this.channels.getElementById(id);
 };
 
+/**
+ * retrieve logo url for channel with given id
+ * @param {string} id
+ * @return {string}
+ */
 Channels.prototype.getLogoUrl = function (id) {
 
-    return this.getChannelById(id).getElementsByTagName('logo')[0].innerHTML;
+    return this.getChannelById(id).querySelector('logo').innerHTML;
 };

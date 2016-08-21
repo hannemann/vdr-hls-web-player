@@ -1,13 +1,21 @@
 /**
+ * @typedef {Object} Hls
+ * @property {Object} Events
+ * @property {function} isSupported
+ * @property {function} attachMedia
+ * @property {function} detachMedia
+ * @property {function} destroy
+ * @property {function} loadSource
+ * @property {function} startLoad
+ * @property {function} recoverMediaError
+ */
+
+/**
  * @constructor
  * @property {Hls} controller
- * @property {HTMLVideoElement} video
+ * @property {HTMLElement} video
  */
-var VDRHls = function (api) {
-
-    this.api = api;
-    this.init();
-};
+var VDRHls = function () {};
 
 VDRHls.prototype = new VDRXMLApi();
 
@@ -17,42 +25,7 @@ VDRHls.prototype.streamUrl = 'hls/stream.m3u8';
  * default preset
  * @type {string}
  */
-VDRHls.prototype.defaultPreset = 'nvlow';
-//VDRHls.prototype.defaultPreset = 'low';
-
-/**
- * available presets
- * @type {{high: string, mid: string, low: string, nvmid: string, nvlow: string}}
- */
-VDRHls.prototype.presets = {
-    "high" : "High",
-    "mid" : "Mid",
-    "low" : "Low",
-    "nvmid" : "Nvenc_mid",
-    "nvlow" : "Nvenc_low"
-};
-
-/**
- * default channel
- * @type {string}
- */
-VDRHls.prototype.defaultChannel = 'Das Erste HD';
-
-/**
- * available channels
- * @type {{Das Erste HD: string, SWR Fernsehen RP HD: string, WDR Köln HD: string, AXN HD: string, Disney Channel HD: string}}
- */
-VDRHls.prototype.availableChannels = {
-    "Das Erste" : "C-1-1101-28106",
-    "Das Erste HD" : "C-1-1051-11100",
-    "SWR Fernsehen RP HD" : "C-1-1051-10304",
-    "WDR Köln HD" : "C-1-1051-28325",
-    "ProSieben HD" : "C-61441-10013-50015",
-    "ProSieben" : "C-61441-10008-53621",
-    "AXN HD" : "C-61441-10015-50023",
-    "AXN" : "C-61441-10007-50304",
-    "Disney Channel HD" : "C-61441-10016-50031"
-};
+VDRHls.prototype.defaultPreset = 'Mid';
 
 VDRHls.prototype.init = function () {
 
@@ -62,7 +35,7 @@ VDRHls.prototype.init = function () {
     this.urlParser = new UrlParser();
     this.preservePoster = false;
     this.recoverTries = 0;
-    this.currentChannel = this.defaultChannel;
+    this.currentChannel = null;
     this.errorLevel = this.errorLevels.info | this.errorLevels.warn | this.errorLevels.debug;
     this.initHandler().addVideoObserver();
     this.info('initialized');
@@ -93,7 +66,7 @@ VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('canplay', function () {
         this.info('Video: can play video now');
-        this.video.poster = this.api.channels.getLogoUrl(this.availableChannels[this.currentChannel]);
+        this.video.poster = this.channels.getLogoUrl(this.currentChannel);
     }.bind(this));
 
     this.video.addEventListener('playing', function () {
@@ -196,8 +169,6 @@ VDRHls.prototype.getSource = function (channel) {
         this.baseUrl + this.streamUrl
     ];
 
-    channel = channel ? this.availableChannels[channel] : this.availableChannels[this.defaultChannel];
-
     url.push(this.getParameters(channel));
 
     return url.join('?');
@@ -221,10 +192,8 @@ VDRHls.prototype.getParameters = function (channel) {
  */
 VDRHls.prototype.setPreset = function (preset) {
 
-    if ("undefined" !== typeof this.presets[preset]) {
-        this.preset = this.presets[preset];
-        document.querySelector('#preset').innerHTML = this.preset;
-    }
+    this.preset = preset;
+    this.presets.setActivePreset(preset);
 };
 
 VDRHls.prototype.errorHandler = function (event, data) {
@@ -235,15 +204,8 @@ VDRHls.prototype.errorHandler = function (event, data) {
         switch(data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
                 // try to recover network error
-                this.warn("fatal network error encountered, try to recover");
-                if (this.recoverTries < 10) {
-                    this.info('trying to restart');
-                    this.debug('tried to startload %d times', this.recoverTries);
-                    this.controller.startLoad();
-                    this.recoverTries++;
-                } else {
-                    this.stop()
-                }
+                this.warn("fatal network error encountered, please try again");
+                this.stop();
                 break;
             case Hls.ErrorTypes.MEDIA_ERROR:
                 this.info("fatal media error encountered, try to recover");
