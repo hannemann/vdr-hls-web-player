@@ -27,7 +27,7 @@ body {
     align-items: center;
 }
 video {
-    max-width: 100%;
+    width: 100%;
 }
 
 #channels {
@@ -38,6 +38,9 @@ video {
 .channel {
     display: flex;
 }
+.channel:nth-child(odd) {
+    background-color: hsla(0,0%,92%,1);
+}
 .logo-wrapper {
     flex: 0 1 15%;
     margin-right: 6px;
@@ -46,7 +49,7 @@ video {
 .channel-logo {
     width: 100%;
 }
-.channel-name {
+.channel-content {
     flex: 1 0 85%;
 }
 
@@ -61,6 +64,11 @@ video {
     font-size: 10px;
 }
 
+.event-shorttext {
+    font-style: italic;
+}
+
+.channel.active,
 .active {
     background-color: #dce3ff;
 }
@@ -71,5 +79,8 @@ video {
         box-sizing: border-box;
         padding-top: calc(100% / 1.777777777);
         height: auto;
+    }
+    .channel-content {
+        font-size: 12px;
     }
 }

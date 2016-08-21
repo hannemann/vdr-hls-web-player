@@ -54,6 +54,11 @@ Channels.Channel.prototype.addElement = function () {
 
     this.channels.element.appendChild(this.element);
 
+    this.event = new Event({
+        "channel" : this,
+        "parentNode" : this.element.querySelector('.channel-content')
+    });
+
     return this;
 };
 
@@ -97,7 +102,7 @@ Channels.Channel.prototype.getInnerHTML = function () {
     if ('' !== this.logoUrl) {
         html += '<div class="logo-wrapper"><img src="' + this.logoUrl + '" class="channel-logo"></div>';
     }
-    html += '<div class="channel-name">' + this.name + '</div>';
+    html += '<div class="channel-content"><div class="channel-name">' + this.name + '</div></div>';
 
     return html;
 };
