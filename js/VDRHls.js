@@ -108,6 +108,8 @@ VDRHls.prototype.startPlayback = function () {
 
     this.video.play();
     //setTimeout(this.mediaRecover, 1500);
+    this.video.style.width = '';
+    this.video.style.height = '';
     this.info('playback started');
 };
 
@@ -143,6 +145,8 @@ VDRHls.prototype.play = function (channel) {
 
     if (this.controller) {
         this.info('Video playing, set poster');
+        this.video.style.width = video.offsetWidth + 'px';
+        this.video.style.height = video.offsetHeight + 'px';
         this.video.poster = this.captureFrame();
         this.preservePoster = true;
         this.info('cancel video');
