@@ -69,6 +69,17 @@ video {
     font-style: italic;
 }
 
+.event-description {
+    max-height: 0;
+    white-space: pre-wrap;
+    overflow: hidden;
+    transition: max-height 1500ms ease-out;
+}
+
+.active .event-description {
+    max-height: 0;
+}
+
 .channel.active,
 .active {
     background-color: #dce3ff;

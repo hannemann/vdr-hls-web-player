@@ -69,6 +69,7 @@ Event.prototype.addEvent = function () {
         + ' ' + this.getTitle()
         + '<br>'
         + ' ' + this.getShortText()
+        + ' ' + this.getDescription()
     ;
 };
 
@@ -121,4 +122,16 @@ Event.prototype.getShortText = function () {
     }
 
     return '<span class="event-shorttext">' + shortText + '</span>';
+};
+
+Event.prototype.getDescription = function () {
+
+    var node = this.event.querySelector('description'),
+        description = 'n.a.';
+
+    if (node) {
+        description = node.innerHTML;
+    }
+
+    return '<div class="event-description">' + description + '</div>';
 };
