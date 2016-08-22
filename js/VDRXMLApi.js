@@ -24,7 +24,7 @@ VDRXMLApi.prototype.presets = null;
  */
 VDRXMLApi.prototype.init = function () {
 
-    this.getErrorLevel();
+    this.getErrorLevel().getDefaultPreset();
     VDRXMLApi.prototype.hls = new VDRHls();
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.presets = new Presets();
@@ -151,6 +151,22 @@ VDRXMLApi.prototype.getErrorLevel = function () {
         default:
             VDRXMLApi.prototype.errorLevel = 0;
     }
+
+    return this;
+};
+
+/**
+ * determine preset from url
+ */
+VDRXMLApi.prototype.getDefaultPreset = function () {
+
+    var preset = location.search.match(/(preset=[^&]+)/);
+
+    if (preset && preset.length > 0) {
+        VDRHls.prototype.defaultPreset = preset[0].split('=')[1];
+    }
+
+    return this;
 };
 
 /**
