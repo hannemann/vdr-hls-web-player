@@ -56,8 +56,6 @@ Event.prototype.readyStateHandler = function (e) {
 
 Event.prototype.addEvent = function () {
 
-    var start = this.getStartDate(), end = this.getEndDate();
-
     if ("undefined" === typeof this.element) {
         this.element = document.createElement('div');
         this.element.classList.add('event');
@@ -65,10 +63,8 @@ Event.prototype.addEvent = function () {
     }
 
     this.element.innerHTML = '<span class="event-start">'
-        + start.getHours()
-        + ':' + start.getMinutes()
-        + ' - ' + end.getHours()
-        + ':' + end.getMinutes()
+        + this.getStart()
+        + ' - ' + this.getEnd()
         + '</span>'
         + ' ' + this.getTitle()
         + '<br>'
@@ -76,22 +72,53 @@ Event.prototype.addEvent = function () {
     ;
 };
 
-Event.prototype.getStartDate = function () {
+Event.prototype.getStart = function () {
 
-    return new Date(parseInt(this.event.querySelector('start').innerHTML, 10) * 1000);
+    var node = this.event.querySelector('start'),
+        start = node ? new Date(parseInt(node.innerHTML, 10) * 1000) : 'NaN',
+        time = 'n.a.';
+
+    if (!isNaN(start)) {
+        start = new Date(parseInt(node.innerHTML, 10) * 1000);
+        time = start.getHours() + ':' + start.getMinutes();
+    }
+    return time;
 };
 
-Event.prototype.getEndDate = function () {
+Event.prototype.getEnd = function () {
 
-    return new Date(parseInt(this.event.querySelector('stop').innerHTML, 10) * 1000);
+    var node = this.event.querySelector('stop'),
+        stop = node ? new Date(parseInt(node.innerHTML, 10) * 1000) : 'NaN',
+        time = 'n.a.';
+
+    if (!isNaN(stop)) {
+        stop = new Date(parseInt(node.innerHTML, 10) * 1000);
+        time = stop.getHours() + ':' + stop.getMinutes();
+    }
+
+    return time;
 };
 
 Event.prototype.getTitle = function () {
 
-    return '<span class="event-title">' + this.event.querySelector('title').innerHTML + '</span>';
+    var node = this.event.querySelector('title'),
+        title = 'n.a.';
+
+    if (node) {
+        title = node.innerHTML;
+    }
+
+    return '<span class="event-title">' + title + '</span>';
 };
 
 Event.prototype.getShortText = function () {
 
-    return '<span class="event-shorttext">' + this.event.querySelector('shorttext').innerHTML + '</span>';
+    var node = this.event.querySelector('title'),
+        shortText = 'n.a.';
+
+    if (node) {
+        shortText = node.innerHTML;
+    }
+
+    return '<span class="event-shorttext">' + shortText + '</span>';
 };
