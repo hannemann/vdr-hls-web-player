@@ -82,7 +82,6 @@ VDRHls.prototype.addVideoObserver = function () {
 VDRHls.prototype.getHlsController = function () {
 
     var config = {debug:(this.errorLevel & this.errorLevels.debugHls)>0};
-    this.recoverTries = 0;
     this.info('controller requested');
 
     config.xhrSetup = function(xhr, url) {
@@ -93,6 +92,8 @@ VDRHls.prototype.getHlsController = function () {
         xhr.open('GET', url, true);
 
     }.bind(this);
+
+    config.startPosition = 2;
 
     if (Hls.isSupported()) {
         this.controller = new Hls(config);
