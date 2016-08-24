@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VDR HLS Stream</title>
+
+    <script src="/js/hls.js"></script>
+    <script>
+
+        var hls, video,
+                src = 'http://your.ip.here/hls/stream.m3u8?chid=CHANNEL_ID_HERE&preset=Mid',
+                src2 = 'http://your.ip.here/hls/stream.m3u8?chid=CHANNEL_ID_HERE&preset=Mid',
+                src3 = 'http://your.ip.here/hls/stream.m3u8?chid=CHANNEL_ID_HERE&preset=Mid',
+                src4 = 'http://your.ip.here/hls/stream.m3u8?chid=CHANNEL_ID_HERE&preset=Nvenc_mid';
+
+        window.addEventListener('load', function () {
+            if(Hls.isSupported()) {
+                video = document.querySelector('video');
+                hls = new Hls();
+                hls.loadSource(src);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                    video.play();
+                });
+            }
+        });
+    </script>
+
+
+</head>
+<body>
+
+<video id="video" controls></video>
+</body>
+</html>

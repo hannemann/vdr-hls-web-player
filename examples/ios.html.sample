@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VDR HLS Stream ios testballon</title>
+</head>
+<body>
+
+<video id="video" controls src="http://your.ip.here:10080/hls/stream.m3u8?chid=CHANNEL_ID_HERE&preset=Mid"></video>
+</body>
+</html>
