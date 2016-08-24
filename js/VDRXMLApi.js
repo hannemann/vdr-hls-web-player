@@ -184,9 +184,26 @@ VDRXMLApi.prototype.getDefaultPreset = function () {
  */
 VDRXMLApi.prototype.load = function () {
 
-    var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest(),
+        auth = this.getAuth();
     xhr.open(this.method, this.baseUrl + this.url, true);
     xhr.onreadystatechange = this.handleReadyState;
-    xhr.setRequestHeader("Authorization", "Basic " + btoa(this.username + ":" + this.password));
+    if (auth) {
+        xhr.setRequestHeader("Authorization", auth);
+    }
     xhr.send();
+};
+
+/**
+ * retrieve authorization string
+ * @return {string|null}
+ */
+VDRXMLApi.prototype.getAuth = function () {
+
+    var auth = null;
+
+    if (this.password && this.password != '' && this.username && this.username != '') {
+        auth = "Basic " + btoa(this.username + ":" + this.password);
+    }
+    return auth;
 };

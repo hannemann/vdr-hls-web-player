@@ -81,7 +81,9 @@ VDRHls.prototype.addVideoObserver = function () {
  */
 VDRHls.prototype.getHlsController = function () {
 
-    var config = {debug:(this.errorLevel & this.errorLevels.debugHls)>0};
+    var config = {debug:(this.errorLevel & this.errorLevels.debugHls)>0},
+        auth = this.getAuth();
+
     this.info('controller requested');
 
     config.xhrSetup = function(xhr, url) {
@@ -90,7 +92,9 @@ VDRHls.prototype.getHlsController = function () {
             url = this.urlParser.addUniqueParam(url);
         }
         xhr.open('GET', url, true);
-        xhr.setRequestHeader("Authorization", "Basic " + btoa(this.username + ":" + this.password));
+        if (auth) {
+            xhr.setRequestHeader("Authorization", auth);
+        }
 
     }.bind(this);
 
