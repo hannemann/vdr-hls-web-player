@@ -90,7 +90,7 @@ VDRHls.prototype.getHlsController = function () {
             url = this.urlParser.addUniqueParam(url);
         }
         xhr.open('GET', url, true);
-    xhr.setRequestHeader("Authorization", "Basic " + btoa(this.username + ":" + this.password));
+        xhr.setRequestHeader("Authorization", "Basic " + btoa(this.username + ":" + this.password));
 
     }.bind(this);
 
