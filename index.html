@@ -10,6 +10,7 @@
 
     <script src="/js/hls.js"></script>
     <script src="/js/VDRXMLApi.js"></script>
+    <script src="js/settings.js"></script>
     <script src="/js/Channels.js"></script>
     <script src="/js/Channels/Channel.js"></script>
     <script src="/js/Event.js"></script>
@@ -21,9 +22,6 @@
 
     <script type="text/javascript">
         window.addEventListener('load', function () {
-
-            // Base url to be used with xmlApi
-            VDRXMLApi.prototype.baseUrl = 'http://192.168.3.99:10080/';
 
             window.vdrXmlApi = new VDRXMLApi();
             vdrXmlApi.init();

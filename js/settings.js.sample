@@ -1,0 +1,3 @@
+VDRXMLApi.prototype.baseUrl = 'http://your.ip.here:10080/';
+VDRXMLApi.prototype.username = 'username';
+VDRXMLApi.prototype.password = 'password';

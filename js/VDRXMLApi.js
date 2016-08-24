@@ -20,6 +20,16 @@ VDRXMLApi.prototype.hls = null;
 VDRXMLApi.prototype.presets = null;
 
 /**
+ * @type {string|null}
+ */
+VDRXMLApi.prototype.username = null;
+
+/**
+ * @type {string|null}
+ */
+VDRXMLApi.prototype.password = null;
+
+/**
  * initialize
  */
 VDRXMLApi.prototype.init = function () {
@@ -175,7 +185,8 @@ VDRXMLApi.prototype.getDefaultPreset = function () {
 VDRXMLApi.prototype.load = function () {
 
     var xhr = new XMLHttpRequest();
-    xhr.open(this.method, this.baseUrl + this.url);
+    xhr.open(this.method, this.baseUrl + this.url, true);
     xhr.onreadystatechange = this.handleReadyState;
+    xhr.setRequestHeader("Authorization", "Basic " + btoa(this.username + ":" + this.password));
     xhr.send();
 };

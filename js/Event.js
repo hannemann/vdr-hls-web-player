@@ -114,7 +114,7 @@ Event.prototype.getTitle = function () {
 
 Event.prototype.getShortText = function () {
 
-    var node = this.event.querySelector('title'),
+    var node = this.event.querySelector('shorttext'),
         shortText = 'n.a.';
 
     if (node) {
