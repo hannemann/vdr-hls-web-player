@@ -69,6 +69,8 @@ VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('playing', function () {
         this.info('Video: Started Playback');
+        this.video.style.width = '';
+        this.video.style.height = '';
     }.bind(this));
     this.info('observers added to video element');
 
@@ -111,10 +113,6 @@ VDRHls.prototype.getHlsController = function () {
 
 VDRHls.prototype.startPlayback = function () {
 
-    //this.video.play();
-    //setTimeout(this.mediaRecover, 1500);
-    this.video.style.width = '';
-    this.video.style.height = '';
     this.info('playback started');
 };
 
