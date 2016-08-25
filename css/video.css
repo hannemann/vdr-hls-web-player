@@ -49,6 +49,7 @@ video {
 }
 .channel-logo {
     width: 100%;
+    display: block;
 }
 .channel-content {
     flex: 1 0 85%;
