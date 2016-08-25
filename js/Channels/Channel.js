@@ -1,5 +1,7 @@
 /**
  * @param {documentElement} channel
+ * @param {function} channel.querySelector
+ * @param {string} channel.id
  * @constructor
  * @property {string} id
  * @property {boolean} isRadio
@@ -54,7 +56,7 @@ Channels.Channel.prototype.addElement = function () {
 
     this.channels.element.appendChild(this.element);
 
-    this.event = new Event({
+    this.event = new DVBEvent({
         "channel" : this,
         "parentNode" : this.element.querySelector('.channel-content')
     });

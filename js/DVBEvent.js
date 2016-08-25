@@ -9,20 +9,20 @@
  * @param options
  * @constructor
  */
-var Event = function (options) {
+var DVBEvent = function (options) {
 
     this.channel = options.channel;
     this.parentNode = options.parentNode;
     this.init();
 };
 
-Event.prototype = new VDRXMLApi();
+DVBEvent.prototype = new VDRXMLApi();
 
-Event.prototype.url = 'epg.xml';
+DVBEvent.prototype.url = 'epg.xml';
 
-Event.prototype.method = 'GET';
+DVBEvent.prototype.method = 'GET';
 
-Event.prototype.init = function () {
+DVBEvent.prototype.init = function () {
 
     this.url += '?chid=' + this.channel.id   + '&at=now';
 
@@ -31,7 +31,7 @@ Event.prototype.init = function () {
     this.info('initialized');
 };
 
-Event.prototype.initHandler = function () {
+DVBEvent.prototype.initHandler = function () {
 
     this.handleReadyState = this.readyStateHandler.bind(this);
 
@@ -42,7 +42,7 @@ Event.prototype.initHandler = function () {
  * handle readyState change
  * @param e
  */
-Event.prototype.readyStateHandler = function (e) {
+DVBEvent.prototype.readyStateHandler = function (e) {
 
     var response = e.target;
 
@@ -54,7 +54,7 @@ Event.prototype.readyStateHandler = function (e) {
     }
 };
 
-Event.prototype.addEvent = function () {
+DVBEvent.prototype.addEvent = function () {
 
     if ("undefined" === typeof this.element) {
         this.element = document.createElement('div');
@@ -73,7 +73,7 @@ Event.prototype.addEvent = function () {
     ;
 };
 
-Event.prototype.getStart = function () {
+DVBEvent.prototype.getStart = function () {
 
     var node = this.event.querySelector('start'),
         start = node ? new Date(parseInt(node.innerHTML, 10) * 1000) : 'NaN',
@@ -86,7 +86,7 @@ Event.prototype.getStart = function () {
     return time;
 };
 
-Event.prototype.getEnd = function () {
+DVBEvent.prototype.getEnd = function () {
 
     var node = this.event.querySelector('stop'),
         stop = node ? new Date(parseInt(node.innerHTML, 10) * 1000) : 'NaN',
@@ -100,7 +100,7 @@ Event.prototype.getEnd = function () {
     return time;
 };
 
-Event.prototype.getTitle = function () {
+DVBEvent.prototype.getTitle = function () {
 
     var node = this.event.querySelector('title'),
         title = 'n.a.';
@@ -112,7 +112,7 @@ Event.prototype.getTitle = function () {
     return '<span class="event-title">' + title + '</span>';
 };
 
-Event.prototype.getShortText = function () {
+DVBEvent.prototype.getShortText = function () {
 
     var node = this.event.querySelector('shorttext'),
         shortText = 'n.a.';
@@ -124,7 +124,7 @@ Event.prototype.getShortText = function () {
     return '<span class="event-shorttext">' + shortText + '</span>';
 };
 
-Event.prototype.getDescription = function () {
+DVBEvent.prototype.getDescription = function () {
 
     var node = this.event.querySelector('description'),
         description = 'n.a.';
