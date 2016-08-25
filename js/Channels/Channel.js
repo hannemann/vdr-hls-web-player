@@ -76,6 +76,17 @@ Channels.Channel.prototype.addObserver = function () {
 };
 
 /**
+ * remove event listeners
+ * @return {Channels.Channel}
+ */
+Channels.Channel.prototype.removeObserver = function () {
+
+    this.element.removeEventListener('click', this.handleClick);
+
+    return this;
+};
+
+/**
  * handle click
  */
 Channels.Channel.prototype.clickHandler = function () {
@@ -107,4 +118,13 @@ Channels.Channel.prototype.getInnerHTML = function () {
     html += '<div class="channel-content"><div class="channel-name">' + this.name + '</div></div>';
 
     return html;
+};
+
+/**
+ * remove
+ */
+Channels.Channel.prototype.remove = function () {
+
+    this.removeObserver();
+    this.element.parentNode.removeChild(this.element);
 };

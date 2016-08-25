@@ -32,7 +32,7 @@ Channels.prototype.init = function () {
     this.className = 'Channels';
     this.handleReadyState = this.readyStateHandler.bind(this);
 
-    this.getElement().load();
+    this.getElement().addObserver().load();
     this.info('initialized');
     return this;
 };
@@ -45,6 +45,44 @@ Channels.prototype.getElement = function () {
 
     this.element = document.querySelector('#channels');
     return this;
+};
+
+/**
+ * add event listeners
+ * @return {Channels}
+ */
+Channels.prototype.addObserver = function () {
+
+    window.addEventListener('orientationchange', function () {
+
+        var firstVisible = this.getFirstVisbleChannel();
+        setTimeout(function () {
+            firstVisible.element.scrollIntoView();
+            this.element.scrollTop += firstVisible.element.offsetHeight * firstVisible.offset / 100;
+        }.bind(this), 200);
+    }.bind(this));
+    return this;
+};
+
+Channels.prototype.getFirstVisbleChannel = function () {
+
+    var i,
+        elementTop = this.element.getBoundingClientRect().top,
+        bottom;
+
+    for (i in this.channelButtons) {
+        if (this.channelButtons.hasOwnProperty(i)) {
+
+            bottom = this.channelButtons[i].element.getBoundingClientRect().bottom;
+            if (bottom > elementTop) {
+
+                return {
+                    "element" : this.channelButtons[i].element,
+                    "offset" : 100 * (bottom - elementTop) / this.channelButtons[i].element.offsetHeight
+                };
+            }
+        }
+    }
 };
 
 /**
@@ -76,6 +114,24 @@ Channels.prototype.addChannels = function () {
         this.channelButtons[channel.id].init();
 
     }.bind(this));
+};
+
+Channels.prototype.reload = function () {
+
+    var i, scrollTop = this.element.scrollTop;
+
+    for (i in this.channelButtons) {
+        if (this.channelButtons.hasOwnProperty(i)) {
+            this.channelButtons[i].remove();
+        }
+    }
+
+    this.addChannels();
+    if (this.hls.currentChannel) {
+        this.channelButtons[this.hls.currentChannel].element.classList.add('active');
+    }
+
+    this.element.scrollTop = scrollTop;
 };
 
 /**

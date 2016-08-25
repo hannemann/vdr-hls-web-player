@@ -36,7 +36,10 @@
     </div>
 </div>
 <div id="channels"></div>
-<button type="button" onclick="vdrXmlApi.hls.stop()">Stop</button>
+<div id="buttons">
+    <button type="button" onclick="vdrXmlApi.hls.stop()">Stop</button>
+    <button type="button" onclick="vdrXmlApi.channels.reload()">Reload</button>
+</div>
 <div id="presets"></div>
 </body>
 </html>

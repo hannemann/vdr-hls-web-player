@@ -8,6 +8,7 @@ body {
     display: flex;
     width: 100vw;
     height: 100vh;
+    background: white;
 }
 
 .video-size {
@@ -40,26 +41,38 @@ video {
     display: flex;
     height: calc(15vw - 6px);
     max-height: 75px;
+    overflow: hidden;
 }
 .channel:nth-child(odd) {
     background-color: hsla(0,0%,92%,1);
+}
+.channel:nth-child(even) {
+    background-color: hsla(0,0%,100%,1);
 }
 .logo-wrapper {
     flex: 0 1 15%;
     margin-right: 6px;
     max-width: 75px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 .channel-logo {
     width: 100%;
     display: block;
 }
 .channel-content {
-    flex: 1 0 85%;
+    flex: 1 0 calc(85% - 10px);
+    padding: 5px;
 }
 
+#buttons,
 #presets {
     display: flex;
     justify-content: space-around;
+    background: white;
+}
+#presets {
     padding: 3px 0;
 }
 .preset {
@@ -88,6 +101,11 @@ video {
     background-color: #dce3ff;
 }
 
+button {
+    min-height: 30px;
+    flex: 0 1 45%;
+}
+
 @media screen and (max-width: 640px) {
 
     .video-size {
@@ -105,12 +123,15 @@ video {
     body {
         justify-content: center;
         align-items: center;
+        background: black;
     }
 
     video {
         position: fixed;
         width: 100vw;
         height: 100vh;
+        max-width: none;
+        max-height: none;
     }
 
     #channels {
@@ -119,5 +140,20 @@ video {
         width: 80vw;
         height: 80vh;
         border-radius: 3px;
+    }
+
+    .channel:nth-child(odd) {
+        background-color: hsla(0,0%,92%,.5);
+    }
+    .channel:nth-child(even) {
+        background-color: hsla(0,0%,100%,.5);
+    }
+    .channel.active {
+        background-color: hsla(228, 100%, 80%, .5);
+    }
+
+    #buttons,
+    #presets {
+        display: none;
     }
 }
