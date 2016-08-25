@@ -111,7 +111,7 @@ VDRHls.prototype.getHlsController = function () {
 
 VDRHls.prototype.startPlayback = function () {
 
-    this.video.play();
+    //this.video.play();
     //setTimeout(this.mediaRecover, 1500);
     this.video.style.width = '';
     this.video.style.height = '';
@@ -165,6 +165,8 @@ VDRHls.prototype.play = function (channel) {
     this.controller.loadSource(src);
     this.info('attach to video element');
     this.controller.attachMedia(this.video);
+
+    this.video.play();
 };
 
 /**
