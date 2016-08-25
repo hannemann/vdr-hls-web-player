@@ -38,6 +38,8 @@ video {
 
 .channel {
     display: flex;
+    height: calc(15vw - 6px);
+    max-height: 75px;
 }
 .channel:nth-child(odd) {
     background-color: hsla(0,0%,92%,1);
@@ -95,5 +97,27 @@ video {
     }
     .channel-content {
         font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+
+    body {
+        justify-content: center;
+        align-items: center;
+    }
+
+    video {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    #channels {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.52);
+        width: 80vw;
+        height: 80vh;
+        border-radius: 3px;
     }
 }
