@@ -9,6 +9,9 @@ Please add your settings to /js/settings.js as shown in /js/settings.js.sample
 #### Authentication
 Not supported yet in xmlapi please use [my fork](https://github.com/hannemann/vdr-plugin-xmlapi) if you really need it right now.
 
+#### Landscape mode
+To hide channels in landscape mode enter fullscreen
+
 ## Possible URL-Parameter
 * preset={your preset}
 * debug={debugHls|debug|warn|info}
