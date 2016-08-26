@@ -75,12 +75,12 @@ DVBEvent.prototype.addEvent = function () {
 
 DVBEvent.prototype.getStart = function () {
 
-    var node = this.event.querySelector('start'),
-        start = node ? new Date(parseInt(node.innerHTML, 10) * 1000) : 'NaN',
+    var node = this.event.getElementsByTagName('start')[0],
+        start = node ? new Date(parseInt(node.textContent, 10) * 1000) : 'NaN',
         time = 'n.a.';
 
     if (!isNaN(start)) {
-        start = new Date(parseInt(node.innerHTML, 10) * 1000);
+        start = new Date(parseInt(node.textContent, 10) * 1000);
         time = start.getHours() + ':' + start.getMinutes();
     }
     return time;
@@ -88,12 +88,12 @@ DVBEvent.prototype.getStart = function () {
 
 DVBEvent.prototype.getEnd = function () {
 
-    var node = this.event.querySelector('stop'),
-        stop = node ? new Date(parseInt(node.innerHTML, 10) * 1000) : 'NaN',
+    var node = this.event.getElementsByTagName('stop')[0],
+        stop = node ? new Date(parseInt(node.textContent, 10) * 1000) : 'NaN',
         time = 'n.a.';
 
     if (!isNaN(stop)) {
-        stop = new Date(parseInt(node.innerHTML, 10) * 1000);
+        stop = new Date(parseInt(node.textContent, 10) * 1000);
         time = stop.getHours() + ':' + stop.getMinutes();
     }
 
@@ -102,11 +102,11 @@ DVBEvent.prototype.getEnd = function () {
 
 DVBEvent.prototype.getTitle = function () {
 
-    var node = this.event.querySelector('title'),
+    var node = this.event.getElementsByTagName('title')[0],
         title = 'n.a.';
 
     if (node) {
-        title = node.innerHTML;
+        title = node.textContent;
     }
 
     return '<span class="event-title">' + title + '</span>';
@@ -114,11 +114,11 @@ DVBEvent.prototype.getTitle = function () {
 
 DVBEvent.prototype.getShortText = function () {
 
-    var node = this.event.querySelector('shorttext'),
+    var node = this.event.getElementsByTagName('shorttext')[0],
         shortText = 'n.a.';
 
     if (node) {
-        shortText = node.innerHTML;
+        shortText = node.textContent;
     }
 
     return '<span class="event-shorttext">' + shortText + '</span>';
@@ -126,11 +126,11 @@ DVBEvent.prototype.getShortText = function () {
 
 DVBEvent.prototype.getDescription = function () {
 
-    var node = this.event.querySelector('description'),
+    var node = this.event.getElementsByTagName('description')[0],
         description = 'n.a.';
 
     if (node) {
-        description = node.innerHTML;
+        description = node.textContent;
     }
 
     return '<div class="event-description">' + description + '</div>';

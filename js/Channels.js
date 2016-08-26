@@ -109,7 +109,7 @@ Channels.prototype.addChannels = function () {
     var channels = Array.prototype.slice.apply(this.channels.getElementsByTagName('channel'));
     channels.forEach(function (channel) {
 
-        this.info('Adding channel %s', channel.querySelector('name').innerHTML);
+        this.info('Adding channel %s', channel.getElementsByTagName('name')[0].textContent);
         this.channelButtons[channel.id] = new Channels.Channel(channel);
         this.channelButtons[channel.id].init();
 
@@ -160,5 +160,5 @@ Channels.prototype.getChannelById = function (id) {
  */
 Channels.prototype.getLogoUrl = function (id) {
 
-    return this.getChannelById(id).querySelector('logo').innerHTML;
+    return this.getChannelById(id).getElementsByTagName('logo')[0].textContent;
 };
