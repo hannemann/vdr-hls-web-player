@@ -19,17 +19,23 @@ IOSHls.prototype.streamUrl = 'hls/stream.m3u8';
 IOSHls.prototype.preset = 'nv_mid';
 
 /**
- * initialilze
+ * initialize
  * @return {IOSHls}
  */
 IOSHls.prototype.init = function () {
 
     this.className = 'VDRHls';
     this.video = document.querySelector('video');
-    this.setPreset(this.defaultPreset);
+    //this.setPreset(this.defaultPreset);
     this.currentChannel = null;
+    this.initHandler().addObserver();
     this.info('initialized');
-    this.addObserver();
+    return this;
+};
+
+IOSHls.prototype.initHandler = function () {
+
+    this.handleVideoPlaying = this.restart.bind(this);
     return this;
 };
 
@@ -47,12 +53,17 @@ IOSHls.prototype.addObserver = function () {
 /**
  * play
  * @param {string} channel
+ * @param {boolean} noRestart
  */
-IOSHls.prototype.play = function (channel) {
+IOSHls.prototype.play = function (channel, noRestart) {
 
     var src;
     this.info('play request');
 
+    noRestart = !(!!noRestart);
+    if (noRestart) {
+        this.video.addEventListener('playing', this.handleVideoPlaying);
+    }
     this.currentChannel = channel;
     src = this.getSource(channel);
     this.video.src = src;
@@ -70,6 +81,12 @@ IOSHls.prototype.stop = function () {
     this.video.pause();
     this.video.src = '';
     this.info('paused');
+};
+
+IOSHls.prototype.restart = function () {
+
+    this.play(this.currentChannel, true);
+    this.video.removeEventListener('playing', this.handleVideoPlaying);
 };
 
 /**

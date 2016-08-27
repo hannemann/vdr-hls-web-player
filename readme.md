@@ -17,18 +17,6 @@ To hide channels in landscape mode enter fullscreen
 * preset={your preset}
 * debug={debugHls|debug|warn|info}
 
-## Chrome
-Video should start automatically if you click on a channel item
-
-## Firefox
-Click on a channel item and hit the play button of the video element to start streaming
-
-## Android Chrome
-Click on a channel item and hit the play button of the video element to start streaming
-
-## ios
-If picture appears immediately hit the same channel button again and the stream should work.
-
 ## Presets
 You can find my presets in the folder xmlapi. Please note that 'nv' prefixed presets work only with a ffmpeg version with compiled nvenc support.  
 If you want to compile in nvenc support you need a kepler graphics chip.  
