@@ -3,9 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>VDR HLS Stream ios testballon</title>
+
+    <script>
+        VDRXMLApi = function () {};
+    </script>
+    <script src="../js/settings.js"></script>
+    <script>
+
+        var channels = [
+                {"name" : "ARD", "id" : "C-1-1051-11100"},
+                {"name" : "ZDF", "id" : "C-1-1079-11110"},
+                {"name" : "NDR", "id" : "C-1-1073-10327"},
+                {"name" : "3Sat", "id" : "C-61441-10017-1115"}
+            ],
+            video,
+            preset = 'nv_main',
+            i, button;
+
+        startStream = function (id) {
+            stopStream();
+            video.src = VDRXMLApi.prototype.baseUrl + 'hls/stream.m3u8?preset=' + preset + '&chid=' + id;
+            video.addEventListener('playing', function () {
+                video.style.width = '';
+                video.style.height = '';
+            });
+            video.play();
+        };
+        stopStream = function () {
+
+            video.style.width = video.offsetWidth + 'px';
+            video.style.height = video.offsetHeight + 'px';
+            video.pause();
+            video.src = '';
+        };
+
+
+        window.addEventListener('load', function () {
+
+            video = document.querySelector('video');
+
+            channels.forEach(function (channel) {
+                button = document.createElement('button');
+                button.addEventListener('click', function () {
+                    startStream(channel.id);
+                });
+                button.innerHTML = channel.name;
+                document.body.appendChild(button);
+            });
+            button = document.createElement('button');
+            button.addEventListener('click', function () {
+                stopStream();
+            });
+            button.innerHTML = 'Stop';
+            document.body.appendChild(button);
+        });
+
+    </script>
+
+
 </head>
 <body>
 
-<video id="video" controls src="http://your.ip.here:10080/hls/stream.m3u8?chid=CHANNEL_ID_HERE&preset=Mid"></video>
+<video id="video" controls></video>
+<br>
 </body>
 </html>

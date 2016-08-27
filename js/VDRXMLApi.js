@@ -35,7 +35,12 @@ VDRXMLApi.prototype.password = null;
 VDRXMLApi.prototype.init = function () {
 
     this.getErrorLevel().getDefaultPreset();
-    VDRXMLApi.prototype.hls = new VDRHls();
+    if (Hls.isSupported()) {
+        VDRXMLApi.prototype.hls = new VDRHls();
+    } else {
+        // assume ios client
+        VDRXMLApi.prototype.hls = new IOSHls();
+    }
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.presets = new Presets();
     this.presets.init();
