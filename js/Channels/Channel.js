@@ -11,9 +11,9 @@
 Channels.Channel = function (channel) {
 
     this.id = channel.id;
-    this.isRadio = channel.querySelector('isradio').innerHTML != 'false';
-    this.name = channel.querySelector('name').innerHTML;
-    this.logoUrl = channel.querySelector('logo').innerHTML;
+    this.isRadio = channel.getElementsByTagName('isradio')[0].textContent != 'false';
+    this.name = channel.getElementsByTagName('name')[0].textContent;
+    this.logoUrl = channel.getElementsByTagName('logo')[0].textContent;
     this.className = 'Channel';
 };
 

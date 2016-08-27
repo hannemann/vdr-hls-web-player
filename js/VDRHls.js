@@ -100,7 +100,7 @@ VDRHls.prototype.getHlsController = function () {
 
     }.bind(this);
 
-    config.startPosition = 2;
+    //config.startPosition = 2;
 
     if (Hls.isSupported()) {
         this.controller = new Hls(config);
