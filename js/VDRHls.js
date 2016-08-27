@@ -14,6 +14,7 @@
  * @constructor
  * @property {Hls} controller
  * @property {HTMLElement} video
+ * @property {int} startPosition
  */
 var VDRHls = function () {};
 
@@ -100,7 +101,7 @@ VDRHls.prototype.getHlsController = function () {
 
     }.bind(this);
 
-    //config.startPosition = 2;
+    config.startPosition = this.startPosition;
 
     if (Hls.isSupported()) {
         this.controller = new Hls(config);
