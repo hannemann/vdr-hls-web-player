@@ -8,8 +8,9 @@ Please add your settings to /js/settings.js as shown in /js/settings.js.sample
 
 #### Authentication
 Not supported yet in xmlapi please use [my fork](https://github.com/hannemann/vdr-plugin-xmlapi) if you really need it right now.
+Even better: use the [dev branch](https://github.com/nanohcv/vdr-plugin-xmlapi/tree/dev) of xmlapi.
 
-#### Landscape mode
+#### Landscape mode (small resolutions only)
 To hide channels in landscape mode enter fullscreen
 
 ## Possible URL-Parameter
@@ -26,11 +27,9 @@ Click on a channel item and hit the play button of the video element to start st
 Click on a channel item and hit the play button of the video element to start streaming
 
 ## ios
-Under construction. If youre interested in contributing please start with the file examples/ios.html
-Video should start playing but will stop after the first sequence (tested on iphone 6)
+If picture appears immediately hit the same channel button again and the stream should work.
 
 ## Presets
-You should add -r 25 parameter to your presets to prevent chrashes in chrome. I did not test if FF crashes too bt it seems to work well with the setting applied.  
 You can find my presets in the folder xmlapi. Please note that 'nv' prefixed presets work only with a ffmpeg version with compiled nvenc support.  
 If you want to compile in nvenc support you need a kepler graphics chip.  
 @see [vdr-portal.de](http://www.vdr-portal.de/board19-verschiedenes/board10-verschiedenes/128687-transkodieren-mit-nvidia-kepler-graka-unter-linux-mit-ffmpeg-es-geht/)
