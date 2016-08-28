@@ -92,7 +92,7 @@ Channels.Channel.prototype.removeObserver = function () {
 Channels.Channel.prototype.clickHandler = function () {
 
     var i;
-    this.hls.play(this.id);
+    this.hls.play(this);
     for (i in this.channels.channelButtons) {
         if (this.channels.channelButtons.hasOwnProperty(i)) {
             if (this.channels.channelButtons[i] !== this) {
@@ -115,7 +115,7 @@ Channels.Channel.prototype.getInnerHTML = function () {
     if ('' !== this.logoUrl) {
         html += '<div class="logo-wrapper"><img src="' + this.logoUrl + '" class="channel-logo"></div>';
     }
-    html += '<div class="channel-content"><div class="channel-name">' + this.name + '</div></div>';
+    html += '<div class="channel-content" id="' + this.id + '"><div class="channel-name">' + this.name + '</div></div>';
 
     return html;
 };

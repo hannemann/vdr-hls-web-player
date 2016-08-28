@@ -73,11 +73,9 @@ VDRHls.prototype.addVideoObserver = function () {
     this.video.addEventListener('canplay', function () {
         this.info('Video: can play video now');
         this.video.poster = this.channels.getLogoUrl(this.currentChannel);
+
     }.bind(this));
 
-    this.video.addEventListener('playing', function () {
-        this.info('Video: Started Playback');
-    }.bind(this));
     this.info('observers added to video element');
 
     return this;
@@ -144,15 +142,16 @@ VDRHls.prototype.stop = function () {
 
 /**
  * start playback
- * @param channel
+ * @param {Channels.Channel} channel
  */
 VDRHls.prototype.play = function (channel) {
 
     var src;
+    this.currentChannel = channel;
+    HLSAbstract.prototype.play.apply(this);
     this.info('play request');
 
-    this.currentChannel = channel;
-    src = this.getSource(channel);
+    src = this.getSource(channel.id);
     this.info('fetch video from %s', src);
 
     if (this.controller) {

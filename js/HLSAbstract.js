@@ -20,6 +20,27 @@ HLSAbstract.prototype.streamUrl = 'hls/stream.m3u8';
 HLSAbstract.prototype.preset = 'nv_mid';
 
 /**
+ * add spinner to channel
+ */
+HLSAbstract.prototype.play = function () {
+
+    var spinner = document.createElement('i');
+    this.removeSpinnerHandler = this.removeSpinner.bind(this);
+    this.video.addEventListener('playing', this.removeSpinnerHandler);
+    spinner.classList.add('fa', 'fa-refresh', 'fa-spin', 'fa-fw');
+    this.currentChannel.element.appendChild(spinner);
+};
+
+/**
+ * remove spinner from channel
+ */
+HLSAbstract.prototype.removeSpinner = function () {
+
+    this.video.removeEventListener('playing', this.removeSpinnerHandler);
+    this.currentChannel.element.removeChild(this.currentChannel.element.querySelector('.fa-spin'));
+};
+
+/**
  * retrieve stream source url
  * @param {string} channel
  */

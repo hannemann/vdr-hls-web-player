@@ -16,7 +16,7 @@ IOSHls.prototype.init = function () {
 
     this.className = 'VDRHls';
     this.video = document.querySelector('video');
-    //this.setPreset(this.defaultPreset);
+    this.addRestartHandler = true;
     this.currentChannel = null;
     this.initHandler();
     this.info('initialized');
@@ -31,20 +31,22 @@ IOSHls.prototype.initHandler = function () {
 
 /**
  * play
- * @param {string} channel
- * @param {boolean} noRestart
+ * @param {Channels.Channel} channel
  */
-IOSHls.prototype.play = function (channel, noRestart) {
+IOSHls.prototype.play = function (channel) {
 
     var src;
+    this.currentChannel = channel;
+    HLSAbstract.prototype.play.apply(this);
     this.info('play request');
 
-    noRestart = !(!!noRestart);
-    if (noRestart) {
+    if (this.addRestartHandler) {
+        this.addRestartHandler = false;
         this.video.addEventListener('playing', this.handleVideoPlaying);
+    } else {
+        this.addRestartHandler = true;
     }
-    this.currentChannel = channel;
-    src = this.getSource(channel);
+    src = this.getSource(channel.id);
     this.video.src = src;
     this.video.play();
     this.info('fetch video from %s', src);
@@ -62,6 +64,6 @@ IOSHls.prototype.stop = function () {
 
 IOSHls.prototype.restart = function () {
 
-    this.play(this.currentChannel, true);
+    this.play(this.currentChannel);
     this.video.removeEventListener('playing', this.handleVideoPlaying);
 };

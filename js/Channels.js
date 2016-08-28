@@ -154,11 +154,11 @@ Channels.prototype.getChannelById = function (id) {
 };
 
 /**
- * retrieve logo url for channel with given id
- * @param {string} id
+ * retrieve logo url for channel
+ * @param {Channels.Channel} channel
  * @return {string}
  */
-Channels.prototype.getLogoUrl = function (id) {
+Channels.prototype.getLogoUrl = function (channel) {
 
-    return this.getChannelById(id).getElementsByTagName('logo')[0].textContent;
+    return this.getChannelById(channel.id).getElementsByTagName('logo')[0].textContent;
 };
