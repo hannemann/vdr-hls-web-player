@@ -35,7 +35,7 @@ video {
     justify-content: space-around;
     padding: 6px 0;
     flex: 1 0 24px;
-    background: hsla(220,50%,70%,1);
+    background: hsla(220,25%,70%,1);
 }
 #controls > div {
     display: flex;
@@ -46,6 +46,7 @@ video {
 #channels {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    flex: 0 1 100%;
 }
 
 .channel {
@@ -165,7 +166,7 @@ button {
     }
     #controls {
         order: 1;
-        background: hsla(220,50%,70%,.5);
+        background: hsla(220,25%,70%,.5);
     }
 
     .channel:nth-child(odd) {
