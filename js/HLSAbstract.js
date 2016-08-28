@@ -1,3 +1,7 @@
+/**
+ * @constructor
+ * @property {Preset|string} preset
+ */
 HLSAbstract = function () {};
 
 /**
@@ -56,10 +60,19 @@ HLSAbstract.prototype.setPreset = function (preset) {
     if (preset) {
         this.preset = preset;
         this.presets.setActivePreset(preset.name);
-        this.setDimension();
     }
+    this.setDimension();
 };
 
+/**
+ * set dimension according to viewport and preset
+ */
 HLSAbstract.prototype.setDimension = function () {
 
+    var bg = document.querySelector('.video-background'),
+        video = document.querySelector('video'),
+        height = window.innerWidth  / (this.preset.width / this.preset.height);
+
+    bg.style.flex = '0 0 ' + height + 'px';
+    video.style.height = height + 'px';
 };

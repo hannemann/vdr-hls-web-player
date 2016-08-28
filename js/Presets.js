@@ -22,6 +22,8 @@ Presets.prototype.init = function () {
     this.className = 'Presets';
     this.handleReadyState = this.readyStateHandler.bind(this);
     this.getElement()
+        .initHandler()
+        .addObserver()
         .load();
 };
 
@@ -32,6 +34,18 @@ Presets.prototype.init = function () {
 Presets.prototype.getElement = function () {
 
     this.element = document.querySelector('#presets');
+    return this;
+};
+
+Presets.prototype.initHandler = function () {
+
+    this.handleChange = this.changeHandler.bind(this);
+    return this;
+};
+
+Presets.prototype.addObserver = function () {
+
+    this.element.addEventListener('change', this.handleChange);
     return this;
 };
 
@@ -48,7 +62,7 @@ Presets.prototype.readyStateHandler = function (e) {
         this.presets = response.responseText;
         this.info('presets loaded');
         this.addPresets();
-        this.setActivePreset(this.hls.preset);
+        this.hls.setPreset(this.hls.preset)
     }
 };
 
@@ -64,24 +78,28 @@ Presets.prototype.addPresets = function () {
     }
 };
 
-Presets.prototype.setActivePreset = function (preset) {
+/**
+ * set active preset
+ * @param presetName
+ */
+Presets.prototype.setActivePreset = function (presetName) {
 
-    var i;
-
-    for (i in this.presetButtons) {
-        if (this.presetButtons.hasOwnProperty(i)) {
-            if (this.presetButtons[i].name !== preset) {
-                this.presetButtons[i].element.classList.remove('active');
-            } else {
-                this.presetButtons[i].element.classList.add('active');
-            }
-        }
-    }
+    this.element.querySelector('[value="' + presetName + '"]').selected = true;
 };
 
+/**
+ * retrieve preset by name
+ * @param name
+ * @return {*}
+ */
 Presets.prototype.get = function (name) {
 
     return this.presetButtons[name];
+};
+
+Presets.prototype.changeHandler = function () {
+
+    this.hls.setPreset(this.presetButtons[this.element.options[this.element.selectedIndex].value]);
 };
 
 Presets.prototype.parseIniFile = function () {

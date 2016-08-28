@@ -18,7 +18,7 @@ IOSHls.prototype.init = function () {
     this.video = document.querySelector('video');
     //this.setPreset(this.defaultPreset);
     this.currentChannel = null;
-    this.initHandler().addObserver();
+    this.initHandler();
     this.info('initialized');
     return this;
 };
@@ -27,17 +27,6 @@ IOSHls.prototype.initHandler = function () {
 
     this.handleVideoPlaying = this.restart.bind(this);
     return this;
-};
-
-/**
- * add event listeners
- */
-IOSHls.prototype.addObserver = function () {
-
-    this.video.addEventListener('playing', function () {
-        this.video.style.width = '';
-        this.video.style.height = '';
-    }.bind(this));
 };
 
 /**
@@ -66,8 +55,6 @@ IOSHls.prototype.play = function (channel, noRestart) {
  */
 IOSHls.prototype.stop = function () {
 
-    this.video.style.width = this.video.offsetWidth + 'px';
-    this.video.style.height = this.video.offsetHeight + 'px';
     this.video.pause();
     this.video.src = '';
     this.info('paused');

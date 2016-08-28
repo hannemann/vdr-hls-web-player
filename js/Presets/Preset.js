@@ -37,9 +37,7 @@ Presets.Preset.prototype = new VDRXMLApi();
 Presets.Preset.prototype.init = function () {
 
     this.parseCmd()
-        .initHandler()
-        .addElement()
-        .addObserver();
+        .addElement();
 };
 
 Presets.Preset.prototype.parseCmd = function () {
@@ -67,38 +65,13 @@ Presets.Preset.prototype.parseCmd = function () {
 };
 
 /**
- * initialize handler
- * @return {Presets.Preset}
- */
-Presets.Preset.prototype.initHandler = function () {
-
-    this.handleClick = this.clickHandler.bind(this);
-
-    return this;
-};
-
-/**
  * add element
  * @return {Presets.Preset}
  */
 Presets.Preset.prototype.addElement = function() {
 
-    this.element = document.createElement('div');
-    this.element.classList.add('preset');
-    this.element.innerHTML = this.name;
-
+    this.element = new Option(this.name, this.name);
     this.presets.element.appendChild(this.element);
-
-    return this;
-};
-
-/**
- * add event listeners
- * @return {Presets.Preset}
- */
-Presets.Preset.prototype.addObserver = function () {
-
-    this.element.addEventListener('click', this.handleClick);
 
     return this;
 };

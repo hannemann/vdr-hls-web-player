@@ -46,6 +46,7 @@ VDRXMLApi.prototype.init = function () {
     this.presets.init();
     this.channels.init();
     this.hls.init();
+    this.addObserver();
 };
 
 /**
@@ -64,6 +65,14 @@ VDRXMLApi.prototype.errorLevels = {
  * @type {string}
  */
 VDRXMLApi.prototype.baseUrl = null;
+
+VDRXMLApi.prototype.addObserver = function () {
+
+    window.addEventListener('orientationchange', function () {
+
+        setTimeout(this.hls.setDimension.bind(this.hls), 200);
+    }.bind(this));
+};
 
 /**
  * log info

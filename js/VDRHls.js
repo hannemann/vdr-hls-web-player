@@ -77,8 +77,6 @@ VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('playing', function () {
         this.info('Video: Started Playback');
-        this.video.style.width = '';
-        this.video.style.height = '';
     }.bind(this));
     this.info('observers added to video element');
 
@@ -159,8 +157,6 @@ VDRHls.prototype.play = function (channel) {
 
     if (this.controller) {
         this.info('Video playing, set poster');
-        this.video.style.width = video.offsetWidth + 'px';
-        this.video.style.height = video.offsetHeight + 'px';
         this.video.poster = this.captureFrame();
         this.preservePoster = true;
         this.info('cancel video');
