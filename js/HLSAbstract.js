@@ -38,17 +38,28 @@ HLSAbstract.prototype.getParameters = function (channel) {
 
     return [
         "chid=" + channel,
-        "preset=" + this.preset
+        "preset=" + this.preset.name
     ].join('&');
 };
 
 
 /**
  * set preset
- * @param {string} preset
+ * @param {string|Preset} preset
  */
 HLSAbstract.prototype.setPreset = function (preset) {
 
-    this.preset = preset;
-    this.presets.setActivePreset(preset);
+    if ("string" === typeof preset) {
+        preset = this.presets.get(preset);
+    }
+
+    if (preset) {
+        this.preset = preset;
+        this.presets.setActivePreset(preset.name);
+        this.setDimension();
+    }
+};
+
+HLSAbstract.prototype.setDimension = function () {
+
 };

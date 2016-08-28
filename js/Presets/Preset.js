@@ -1,10 +1,28 @@
 /**
- * @param {string} preset
- * @constructor
+ * @typedef {{}} presetOptions
+ * @property {string} Cmd
+ * @property {string} MinSegments
+ * @property {string} StreamTimeout
  */
-Presets.Preset = function (preset) {
 
+/**
+ * @param {string} preset
+ * @param {presetOptions} config
+ * @constructor
+ * @property {number} minSegments
+ * @property {number} streamTimeout
+ * @property {string} cmd
+ * @property {number} width
+ * @property {number} heigth
+ */
+Presets.Preset = function (preset, config) {
+
+    this.minSegments = parseInt(config.MinSegments, 10);
+    this.streamTimeout = parseInt(config.StreamTimeout, 10);
+    this.cmd = config.Cmd;
     this.name = preset;
+    this.width = 0;
+    this.height = 0;
     this.init();
 };
 
@@ -18,9 +36,34 @@ Presets.Preset.prototype = new VDRXMLApi();
  */
 Presets.Preset.prototype.init = function () {
 
-    this.initHandler()
+    this.parseCmd()
+        .initHandler()
         .addElement()
         .addObserver();
+};
+
+Presets.Preset.prototype.parseCmd = function () {
+
+    var regex = {
+            "width" : /scale=([0-9]{1,4}):[0-9]{1,4}/,
+            "height" : /scale=[0-9]{1,4}:([0-9]{1,4})/
+        }, i, match;
+
+    for (i in regex) {
+        if (regex.hasOwnProperty(i)) {
+            match = this.cmd.match(regex[i]);
+            if (match) {
+                if (!isNaN(this[i])) {
+                    this[i] = parseInt((match.length > 1 ? match[1] : match), 10);
+                } else {
+                    this[i] = match.length > 1 ? match[1] : match;
+                }
+            } else {
+                this[i] = undefined;
+            }
+        }
+    }
+    return this;
 };
 
 /**
@@ -65,5 +108,5 @@ Presets.Preset.prototype.addObserver = function () {
  */
 Presets.Preset.prototype.clickHandler = function () {
 
-    this.hls.setPreset(this.name);
+    this.hls.setPreset(this);
 };
