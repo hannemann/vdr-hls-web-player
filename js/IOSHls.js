@@ -14,18 +14,26 @@ IOSHls.prototype = new HLSAbstract();
  */
 IOSHls.prototype.init = function () {
 
-    this.className = 'VDRHls';
+    this.className = 'IOSHls';
     this.video = document.querySelector('video');
     this.addRestartHandler = true;
     this.currentChannel = null;
-    this.initHandler();
+    this.initHandler().addObserver();
     this.info('initialized');
     return this;
 };
 
 IOSHls.prototype.initHandler = function () {
 
+    this.errorHandler = this.handleError.bind(this);
     this.handleVideoPlaying = this.restart.bind(this);
+    return this;
+};
+
+IOSHls.prototype.addObserver = function () {
+
+    this.video.addEventListener('error', this.errorHandler);
+    HLSAbstract.prototype.addObserver.apply(this);
     return this;
 };
 
@@ -59,7 +67,7 @@ IOSHls.prototype.stop = function () {
 
     this.video.pause();
     this.video.src = '';
-    this.info('paused');
+    HLSAbstract.prototype.stop.apply(this);
 };
 
 IOSHls.prototype.restart = function () {

@@ -35,6 +35,7 @@ video {
     justify-content: space-around;
     padding: 6px 0;
     flex: 1 0 24px;
+    background: hsla(220,50%,70%,1);
 }
 #controls > div {
     display: flex;
@@ -76,7 +77,7 @@ video {
     flex: 1 0 calc(85% - 10px);
     padding: 5px;
 }
-.channel .fa-spin {
+.channel .status-icon {
     position: absolute;
     right: .25em;
     top: .5em;
@@ -153,7 +154,6 @@ button {
 
     #control {
         position: absolute;
-        background: rgba(255, 255, 255, 0.52);
         top: 0;
         left: 0;
         right: 0;
@@ -165,6 +165,7 @@ button {
     }
     #controls {
         order: 1;
+        background: hsla(220,50%,70%,.5);
     }
 
     .channel:nth-child(odd) {

@@ -116,6 +116,9 @@ Channels.prototype.addChannels = function () {
     }.bind(this));
 };
 
+/**
+ * reload all channels
+ */
 Channels.prototype.reload = function () {
 
     var i, scrollTop = this.element.scrollTop;
@@ -133,15 +136,6 @@ Channels.prototype.reload = function () {
 
     this.element.scrollTop = scrollTop;
 };
-
-/**
- * determine if we have channels
- * @return {boolean}
- */
-//Channels.prototype.hasChannels = function () {
-//
-//    return this.channels !== null;
-//};
 
 /**
  * retrieve channel with given id

@@ -46,8 +46,7 @@ VDRHls.prototype.init = function () {
  */
 VDRHls.prototype.initHandler = function () {
 
-    this.mediaRecover = this.recoverMedia.bind(this);
-    this.handleError = this.errorHandler.bind(this);
+    this.errorHandler = this.handleError.bind(this);
     this.start = this.startPlayback.bind(this);
     this.info('handlers initialized');
 
@@ -60,7 +59,7 @@ VDRHls.prototype.initHandler = function () {
 VDRHls.prototype.addObserver = function () {
 
     this.controller.on(Hls.Events.MANIFEST_PARSED, this.start);
-    this.controller.on(Hls.Events.ERROR, this.handleError);
+    this.controller.on(Hls.Events.ERROR, this.errorHandler);
     this.info('observers added to controller');
 };
 
@@ -77,6 +76,8 @@ VDRHls.prototype.addVideoObserver = function () {
     }.bind(this));
 
     this.info('observers added to video element');
+
+    HLSAbstract.prototype.addObserver.apply(this);
 
     return this;
 };
@@ -137,7 +138,7 @@ VDRHls.prototype.stop = function () {
     if (!this.preservePoster) {
         this.video.poster = '';
     }
-    this.info('paused');
+    HLSAbstract.prototype.stop.apply(this);
 };
 
 /**
@@ -148,11 +149,6 @@ VDRHls.prototype.play = function (channel) {
 
     var src;
     this.currentChannel = channel;
-    HLSAbstract.prototype.play.apply(this);
-    this.info('play request');
-
-    src = this.getSource(channel.id);
-    this.info('fetch video from %s', src);
 
     if (this.controller) {
         this.info('Video playing, set poster');
@@ -162,6 +158,11 @@ VDRHls.prototype.play = function (channel) {
         this.stop();
         this.preservePoster = false;
     }
+
+    HLSAbstract.prototype.play.apply(this);
+    this.info('play request');
+    src = this.getSource(channel.id);
+    this.info('fetch video from %s', src);
     this.getHlsController();
     this.addObserver();
 
@@ -173,7 +174,7 @@ VDRHls.prototype.play = function (channel) {
     this.video.play();
 };
 
-VDRHls.prototype.errorHandler = function (event, data) {
+VDRHls.prototype.handleError = function (event, data) {
 
     this.info("error encountered, try to recover");
     this.debug(data);
@@ -186,7 +187,7 @@ VDRHls.prototype.errorHandler = function (event, data) {
                 break;
             case Hls.ErrorTypes.MEDIA_ERROR:
                 this.info("fatal media error encountered, try to recover");
-                this.mediaRecover();
+                this.recoverMedia();
                 break;
             default:
                 // cannot recover
@@ -195,6 +196,7 @@ VDRHls.prototype.errorHandler = function (event, data) {
                 break;
         }
     }
+    HLSAbstract.prototype.handleError.apply(this);
 };
 
 VDRHls.prototype.recoverMedia = function () {

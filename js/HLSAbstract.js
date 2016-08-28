@@ -20,24 +20,57 @@ HLSAbstract.prototype.streamUrl = 'hls/stream.m3u8';
 HLSAbstract.prototype.preset = 'nv_mid';
 
 /**
+ * add event listeners
+ */
+HLSAbstract.prototype.addObserver = function () {
+
+    this.progressHandler = this.handleProgress.bind(this);
+    this.video.addEventListener('progress', this.progressHandler);
+};
+
+/**
  * add spinner to channel
  */
 HLSAbstract.prototype.play = function () {
 
-    var spinner = document.createElement('i');
-    this.removeSpinnerHandler = this.removeSpinner.bind(this);
-    this.video.addEventListener('playing', this.removeSpinnerHandler);
-    spinner.classList.add('fa', 'fa-refresh', 'fa-spin', 'fa-fw');
-    this.currentChannel.element.appendChild(spinner);
+    this.currentChannel
+        .removeError()
+        .addSpinner()
+        .setIsActive();
+};
+
+/**
+ * stop
+ */
+HLSAbstract.prototype.stop = function () {
+
+    this.video.pause();
+    this.video.src = '';
+    this.currentChannel
+        .removeSpinner()
+        .unsetIsActive()
+        .removeError();
+    this.info('paused');
 };
 
 /**
  * remove spinner from channel
  */
-HLSAbstract.prototype.removeSpinner = function () {
+HLSAbstract.prototype.handleProgress = function () {
 
-    this.video.removeEventListener('playing', this.removeSpinnerHandler);
-    this.currentChannel.element.removeChild(this.currentChannel.element.querySelector('.fa-spin'));
+    this.currentChannel
+        .removeSpinner()
+        .removeError();
+};
+
+/**
+ * remove spinner from channel
+ */
+HLSAbstract.prototype.handleError = function () {
+
+    this.currentChannel
+        .removeSpinner()
+        .addError();
 };
 
 /**
