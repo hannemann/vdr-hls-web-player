@@ -18,16 +18,15 @@
  */
 var VDRHls = function () {};
 
-VDRHls.prototype = new VDRXMLApi();
-
-VDRHls.prototype.streamUrl = 'hls/stream.m3u8';
+/**
+ * @type {HLSAbstract}
+ */
+VDRHls.prototype = new HLSAbstract();
 
 /**
- * default preset
- * @type {string}
+ * initialize
+ * @return {VDRHls}
  */
-VDRHls.prototype.defaultPreset = 'Mid';
-
 VDRHls.prototype.init = function () {
 
     this.className = 'VDRHls';
@@ -41,6 +40,10 @@ VDRHls.prototype.init = function () {
     return this;
 };
 
+/**
+ * initialize handler
+ * @return {VDRHls}
+ */
 VDRHls.prototype.initHandler = function () {
 
     this.mediaRecover = this.recoverMedia.bind(this);
@@ -61,6 +64,10 @@ VDRHls.prototype.addObserver = function () {
     this.info('observers added to controller');
 };
 
+/**
+ * add video element related event listeners
+ * @return {VDRHls}
+ */
 VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('canplay', function () {
@@ -112,6 +119,9 @@ VDRHls.prototype.getHlsController = function () {
     return false;
 };
 
+/**
+ * start playback
+ */
 VDRHls.prototype.startPlayback = function () {
 
     this.info('playback started');
@@ -166,43 +176,6 @@ VDRHls.prototype.play = function (channel) {
     this.controller.attachMedia(this.video);
 
     this.video.play();
-};
-
-/**
- * retrieve stream source url
- * @param {string} channel
- */
-VDRHls.prototype.getSource = function (channel) {
-
-    var url = [
-        this.baseUrl + this.streamUrl
-    ];
-
-    url.push(this.getParameters(channel));
-
-    return url.join('?');
-};
-
-/**
- * retrieve stream source url parameters
- * @param {string} channel
- */
-VDRHls.prototype.getParameters = function (channel) {
-
-    return [
-        "chid=" + channel,
-        "preset=" + this.preset
-    ].join('&');
-};
-
-/**
- * set preset
- * @param {string} preset
- */
-VDRHls.prototype.setPreset = function (preset) {
-
-    this.preset = preset;
-    this.presets.setActivePreset(preset);
 };
 
 VDRHls.prototype.errorHandler = function (event, data) {

@@ -6,17 +6,7 @@ IOSHls = function () {};
 /**
  * @type {VDRXMLApi}
  */
-IOSHls.prototype = new VDRXMLApi();
-
-/**
- * @type {string}
- */
-IOSHls.prototype.streamUrl = 'hls/stream.m3u8';
-
-/**
- * @type {string}
- */
-IOSHls.prototype.preset = 'nv_mid';
+IOSHls.prototype = new HLSAbstract();
 
 /**
  * initialize
@@ -87,31 +77,4 @@ IOSHls.prototype.restart = function () {
 
     this.play(this.currentChannel, true);
     this.video.removeEventListener('playing', this.handleVideoPlaying);
-};
-
-/**
- * retrieve stream source url
- * @param {string} channel
- */
-IOSHls.prototype.getSource = function (channel) {
-
-    var url = [
-        this.baseUrl + this.streamUrl
-    ];
-
-    url.push(this.getParameters(channel));
-
-    return url.join('?');
-};
-
-/**
- * retrieve stream source url parameters
- * @param {string} channel
- */
-IOSHls.prototype.getParameters = function (channel) {
-
-    return [
-        "chid=" + channel,
-        "preset=" + this.preset
-    ].join('&');
 };
