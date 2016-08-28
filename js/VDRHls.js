@@ -31,7 +31,6 @@ VDRHls.prototype.init = function () {
 
     this.className = 'VDRHls';
     this.video = document.querySelector('video');
-    this.setPreset(this.defaultPreset);
     this.urlParser = new UrlParser();
     this.preservePoster = false;
     this.currentChannel = null;

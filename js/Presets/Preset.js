@@ -70,7 +70,8 @@ Presets.Preset.prototype.parseCmd = function () {
  */
 Presets.Preset.prototype.addElement = function() {
 
-    this.element = new Option(this.name, this.name);
+    var selected = this.name === this.hls.defaultPreset;
+    this.element = new Option(this.name, this.name, selected, selected);
     this.presets.element.appendChild(this.element);
 
     return this;

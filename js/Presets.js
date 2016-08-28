@@ -62,7 +62,7 @@ Presets.prototype.readyStateHandler = function (e) {
         this.presets = response.responseText;
         this.info('presets loaded');
         this.addPresets();
-        this.hls.setPreset(this.hls.preset)
+        this.hls.setPreset(this.currentPreset);
     }
 };
 
@@ -74,7 +74,13 @@ Presets.prototype.addPresets = function () {
         if (presets.hasOwnProperty(name)) {
 
             this.presetButtons[name] = new Presets.Preset(name, presets[name]);
+            if (name === VDRHls.prototype.defaultPreset) {
+                this.currentPreset = name;
+            }
         }
+    }
+    if (!this.currentPreset) {
+        this.currentPreset = VDRHls.prototype.defaultPreset ? VDRHls.prototype.defaultPreset : name;
     }
 };
 
@@ -84,6 +90,7 @@ Presets.prototype.addPresets = function () {
  */
 Presets.prototype.setActivePreset = function (presetName) {
 
+    this.currentPreset = presetName;
     this.element.querySelector('[value="' + presetName + '"]').selected = true;
 };
 

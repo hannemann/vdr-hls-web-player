@@ -187,7 +187,7 @@ VDRXMLApi.prototype.getDefaultPreset = function () {
     var preset = location.search.match(/(preset=[^&]+)/);
 
     if (preset && preset.length > 0) {
-        VDRHls.prototype.defaultPreset = preset[0].split('=')[1];
+        HLSAbstract.prototype.defaultPreset = preset[0].split('=')[1];
     }
 
     return this;

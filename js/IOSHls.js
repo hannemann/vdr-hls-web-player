@@ -67,7 +67,8 @@ IOSHls.prototype.stop = function () {
 
     this.video.pause();
     this.video.src = '';
-    HLSAbstract.prototype.stop.apply(this);
+
+    setTimeout(HLSAbstract.prototype.stop.bind(this), 200);
 };
 
 IOSHls.prototype.restart = function () {

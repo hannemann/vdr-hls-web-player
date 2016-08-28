@@ -17,7 +17,7 @@ HLSAbstract.prototype.streamUrl = 'hls/stream.m3u8';
 /**
  * @type {string}
  */
-HLSAbstract.prototype.preset = 'nv_mid';
+HLSAbstract.prototype.defaultPreset = '';
 
 /**
  * add event listeners
@@ -44,8 +44,6 @@ HLSAbstract.prototype.play = function () {
  */
 HLSAbstract.prototype.stop = function () {
 
-    this.video.pause();
-    this.video.src = '';
     this.currentChannel
         .removeSpinner()
         .unsetIsActive()
@@ -103,7 +101,7 @@ HLSAbstract.prototype.getParameters = function (channel) {
 
 /**
  * set preset
- * @param {string|Preset} preset
+ * @param {string|Presets.Preset} preset
  */
 HLSAbstract.prototype.setPreset = function (preset) {
 
