@@ -14,24 +14,23 @@
  * @constructor
  * @property {Hls} controller
  * @property {HTMLElement} video
+ * @property {int} startPosition
  */
 var VDRHls = function () {};
 
-VDRHls.prototype = new VDRXMLApi();
-
-VDRHls.prototype.streamUrl = 'hls/stream.m3u8';
+/**
+ * @type {HLSAbstract}
+ */
+VDRHls.prototype = new HLSAbstract();
 
 /**
- * default preset
- * @type {string}
+ * initialize
+ * @return {VDRHls}
  */
-VDRHls.prototype.defaultPreset = 'Mid';
-
 VDRHls.prototype.init = function () {
 
     this.className = 'VDRHls';
     this.video = document.querySelector('video');
-    this.setPreset(this.defaultPreset);
     this.urlParser = new UrlParser();
     this.preservePoster = false;
     this.currentChannel = null;
@@ -40,10 +39,13 @@ VDRHls.prototype.init = function () {
     return this;
 };
 
+/**
+ * initialize handler
+ * @return {VDRHls}
+ */
 VDRHls.prototype.initHandler = function () {
 
-    this.mediaRecover = this.recoverMedia.bind(this);
-    this.handleError = this.errorHandler.bind(this);
+    this.errorHandler = this.handleError.bind(this);
     this.start = this.startPlayback.bind(this);
     this.info('handlers initialized');
 
@@ -56,23 +58,25 @@ VDRHls.prototype.initHandler = function () {
 VDRHls.prototype.addObserver = function () {
 
     this.controller.on(Hls.Events.MANIFEST_PARSED, this.start);
-    this.controller.on(Hls.Events.ERROR, this.handleError);
+    this.controller.on(Hls.Events.ERROR, this.errorHandler);
     this.info('observers added to controller');
 };
 
+/**
+ * add video element related event listeners
+ * @return {VDRHls}
+ */
 VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('canplay', function () {
         this.info('Video: can play video now');
         this.video.poster = this.channels.getLogoUrl(this.currentChannel);
+
     }.bind(this));
 
-    this.video.addEventListener('playing', function () {
-        this.info('Video: Started Playback');
-        this.video.style.width = '';
-        this.video.style.height = '';
-    }.bind(this));
     this.info('observers added to video element');
+
+    HLSAbstract.prototype.addObserver.apply(this);
 
     return this;
 };
@@ -100,7 +104,7 @@ VDRHls.prototype.getHlsController = function () {
 
     }.bind(this);
 
-    //config.startPosition = 2;
+    config.startPosition = this.startPosition;
 
     if (Hls.isSupported()) {
         this.controller = new Hls(config);
@@ -111,6 +115,9 @@ VDRHls.prototype.getHlsController = function () {
     return false;
 };
 
+/**
+ * start playback
+ */
 VDRHls.prototype.startPlayback = function () {
 
     this.info('playback started');
@@ -130,32 +137,31 @@ VDRHls.prototype.stop = function () {
     if (!this.preservePoster) {
         this.video.poster = '';
     }
-    this.info('paused');
+    HLSAbstract.prototype.stop.apply(this);
 };
 
 /**
  * start playback
- * @param channel
+ * @param {Channels.Channel} channel
  */
 VDRHls.prototype.play = function (channel) {
 
     var src;
-    this.info('play request');
-
     this.currentChannel = channel;
-    src = this.getSource(channel);
-    this.info('fetch video from %s', src);
 
     if (this.controller) {
         this.info('Video playing, set poster');
-        this.video.style.width = video.offsetWidth + 'px';
-        this.video.style.height = video.offsetHeight + 'px';
         this.video.poster = this.captureFrame();
         this.preservePoster = true;
         this.info('cancel video');
         this.stop();
         this.preservePoster = false;
     }
+
+    HLSAbstract.prototype.play.apply(this);
+    this.info('play request');
+    src = this.getSource(channel.id);
+    this.info('fetch video from %s', src);
     this.getHlsController();
     this.addObserver();
 
@@ -167,44 +173,7 @@ VDRHls.prototype.play = function (channel) {
     this.video.play();
 };
 
-/**
- * retrieve stream source url
- * @param {string} channel
- */
-VDRHls.prototype.getSource = function (channel) {
-
-    var url = [
-        this.baseUrl + this.streamUrl
-    ];
-
-    url.push(this.getParameters(channel));
-
-    return url.join('?');
-};
-
-/**
- * retrieve stream source url parameters
- * @param {string} channel
- */
-VDRHls.prototype.getParameters = function (channel) {
-
-    return [
-        "chid=" + channel,
-        "preset=" + this.preset
-    ].join('&');
-};
-
-/**
- * set preset
- * @param {string} preset
- */
-VDRHls.prototype.setPreset = function (preset) {
-
-    this.preset = preset;
-    this.presets.setActivePreset(preset);
-};
-
-VDRHls.prototype.errorHandler = function (event, data) {
+VDRHls.prototype.handleError = function (event, data) {
 
     this.info("error encountered, try to recover");
     this.debug(data);
@@ -217,7 +186,7 @@ VDRHls.prototype.errorHandler = function (event, data) {
                 break;
             case Hls.ErrorTypes.MEDIA_ERROR:
                 this.info("fatal media error encountered, try to recover");
-                this.mediaRecover();
+                this.recoverMedia();
                 break;
             default:
                 // cannot recover
@@ -226,6 +195,7 @@ VDRHls.prototype.errorHandler = function (event, data) {
                 break;
         }
     }
+    HLSAbstract.prototype.handleError.apply(this);
 };
 
 VDRHls.prototype.recoverMedia = function () {

@@ -116,6 +116,9 @@ Channels.prototype.addChannels = function () {
     }.bind(this));
 };
 
+/**
+ * reload all channels
+ */
 Channels.prototype.reload = function () {
 
     var i, scrollTop = this.element.scrollTop;
@@ -135,15 +138,6 @@ Channels.prototype.reload = function () {
 };
 
 /**
- * determine if we have channels
- * @return {boolean}
- */
-//Channels.prototype.hasChannels = function () {
-//
-//    return this.channels !== null;
-//};
-
-/**
  * retrieve channel with given id
  * @param {string} id
  * @return {Element}
@@ -154,11 +148,11 @@ Channels.prototype.getChannelById = function (id) {
 };
 
 /**
- * retrieve logo url for channel with given id
- * @param {string} id
+ * retrieve logo url for channel
+ * @param {Channels.Channel} channel
  * @return {string}
  */
-Channels.prototype.getLogoUrl = function (id) {
+Channels.prototype.getLogoUrl = function (channel) {
 
-    return this.getChannelById(id).getElementsByTagName('logo')[0].textContent;
+    return this.getChannelById(channel.id).getElementsByTagName('logo')[0].textContent;
 };

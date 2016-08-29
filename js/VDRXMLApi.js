@@ -35,12 +35,18 @@ VDRXMLApi.prototype.password = null;
 VDRXMLApi.prototype.init = function () {
 
     this.getErrorLevel().getDefaultPreset();
-    VDRXMLApi.prototype.hls = new VDRHls();
+    if (Hls.isSupported()) {
+        VDRXMLApi.prototype.hls = new VDRHls();
+    } else {
+        // assume ios client
+        VDRXMLApi.prototype.hls = new IOSHls();
+    }
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.presets = new Presets();
     this.presets.init();
     this.channels.init();
     this.hls.init();
+    this.addObserver();
 };
 
 /**
@@ -59,6 +65,14 @@ VDRXMLApi.prototype.errorLevels = {
  * @type {string}
  */
 VDRXMLApi.prototype.baseUrl = null;
+
+VDRXMLApi.prototype.addObserver = function () {
+
+    window.addEventListener('orientationchange', function () {
+
+        setTimeout(this.hls.setDimension.bind(this.hls), 200);
+    }.bind(this));
+};
 
 /**
  * log info
@@ -173,7 +187,7 @@ VDRXMLApi.prototype.getDefaultPreset = function () {
     var preset = location.search.match(/(preset=[^&]+)/);
 
     if (preset && preset.length > 0) {
-        VDRHls.prototype.defaultPreset = preset[0].split('=')[1];
+        HLSAbstract.prototype.defaultPreset = preset[0].split('=')[1];
     }
 
     return this;

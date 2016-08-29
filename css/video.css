@@ -11,30 +11,42 @@ body {
     background: white;
 }
 
-.video-size {
+.video-background {
     width: 100%;
-    height: 50%;
     background: black;
-    position: relative;
 }
-.video-wrapper {
+video {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 0;
     right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-video {
+    margin: auto;
     max-width: 100%;
     max-height: 100%;
 }
 
+#control {
+    display:flex;
+    flex: 0 5 100%;
+    flex-direction: column;
+}
+#controls {
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 0;
+    flex: 1 0 24px;
+    background: hsla(220,25%,70%,1);
+}
+#controls > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 1 100%;
+}
 #channels {
     overflow: auto;
-    flex: 0 5 100%;
+    -webkit-overflow-scrolling: touch;
+    flex: 0 1 100%;
 }
 
 .channel {
@@ -42,6 +54,7 @@ video {
     height: calc(15vw - 6px);
     max-height: 75px;
     overflow: hidden;
+    position: relative;
 }
 .channel:nth-child(odd) {
     background-color: hsla(0,0%,92%,1);
@@ -65,7 +78,11 @@ video {
     flex: 1 0 calc(85% - 10px);
     padding: 5px;
 }
-
+.channel .status-icon {
+    position: absolute;
+    right: .25em;
+    top: .5em;
+}
 #buttons,
 #presets {
     display: flex;
@@ -74,6 +91,8 @@ video {
 }
 #presets {
     padding: 3px 0;
+    background-color: transparent;
+    border: none;
 }
 .preset {
     border: 1px solid grey;
@@ -118,7 +137,7 @@ button {
     }
 }
 
-@media screen and (max-width: 768px) and (orientation: landscape) {
+@media screen and (orientation: landscape) {
 
     body {
         justify-content: center;
@@ -127,19 +146,27 @@ button {
     }
 
     video {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
+        position: absolute;
+        width: 100%;
+        height: 100% !important;
         max-width: none;
         max-height: none;
     }
 
-    #channels {
+    #control {
         position: absolute;
-        background: rgba(255, 255, 255, 0.52);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
         width: 80vw;
         height: 80vh;
         border-radius: 3px;
+    }
+    #controls {
+        order: 1;
+        background: hsla(220,25%,70%,.5);
     }
 
     .channel:nth-child(odd) {
@@ -150,10 +177,5 @@ button {
     }
     .channel.active {
         background-color: hsla(228, 100%, 80%, .5);
-    }
-
-    #buttons,
-    #presets {
-        display: none;
     }
 }

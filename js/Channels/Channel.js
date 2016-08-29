@@ -27,10 +27,36 @@ Channels.Channel.prototype = new VDRXMLApi();
  */
 Channels.Channel.prototype.init = function () {
 
-    this.initHandler()
+    this.initSpinner()
+        .initError()
+        .initHandler()
         .addElement()
         .addObserver()
     ;
+};
+
+/**
+ * initialize spinner
+ * @return {Channels.Channel}
+ */
+Channels.Channel.prototype.initSpinner = function () {
+
+    this.spinner = document.createElement('i');
+    this.spinner.classList.add('fa', 'fa-refresh', 'fa-spin', 'fa-fw', 'status-icon');
+
+    return this;
+};
+
+/**
+ * initialize error
+ * @return {Channels.Channel}
+ */
+Channels.Channel.prototype.initError = function () {
+
+    this.error = document.createElement('i');
+    this.error.classList.add('fa', 'fa-exclamation-triangle', 'status-icon');
+
+    return this;
 };
 
 /**
@@ -91,17 +117,71 @@ Channels.Channel.prototype.removeObserver = function () {
  */
 Channels.Channel.prototype.clickHandler = function () {
 
-    var i;
-    this.hls.play(this.id);
-    for (i in this.channels.channelButtons) {
-        if (this.channels.channelButtons.hasOwnProperty(i)) {
-            if (this.channels.channelButtons[i] !== this) {
-                this.channels.channelButtons[i].element.classList.remove('active');
-            } else {
-                this.channels.channelButtons[i].element.classList.add('active');
-            }
-        }
+    if (this.hls.currentChannel) {
+        this.hls.currentChannel
+            .removeSpinner()
+            .removeError()
+            .unsetIsActive();
     }
+    this.hls.play(this);
+};
+
+/**
+ * set active className
+ */
+Channels.Channel.prototype.setIsActive = function () {
+
+    this.element.classList.add('active');
+    return this;
+};
+
+/**
+ * remove active className
+ */
+Channels.Channel.prototype.unsetIsActive = function () {
+
+    this.element.classList.remove('active');
+    return this;
+};
+
+/**
+ * add spinner
+ */
+Channels.Channel.prototype.addSpinner = function () {
+
+    this.element.appendChild(this.spinner);
+    return this;
+};
+
+/**
+ * remove spinner
+ */
+Channels.Channel.prototype.removeSpinner = function () {
+
+    if (this.spinner.parentNode) {
+        this.element.removeChild(this.spinner);
+    }
+    return this;
+};
+
+/**
+ * add spinner
+ */
+Channels.Channel.prototype.addError = function () {
+
+    this.element.appendChild(this.error);
+    return this;
+};
+
+/**
+ * remove spinner
+ */
+Channels.Channel.prototype.removeError = function () {
+
+    if (this.error.parentNode) {
+        this.element.removeChild(this.error);
+    }
+    return this;
 };
 
 /**
@@ -115,7 +195,7 @@ Channels.Channel.prototype.getInnerHTML = function () {
     if ('' !== this.logoUrl) {
         html += '<div class="logo-wrapper"><img src="' + this.logoUrl + '" class="channel-logo"></div>';
     }
-    html += '<div class="channel-content"><div class="channel-name">' + this.name + '</div></div>';
+    html += '<div class="channel-content" id="' + this.id + '"><div class="channel-name">' + this.name + '</div></div>';
 
     return html;
 };
