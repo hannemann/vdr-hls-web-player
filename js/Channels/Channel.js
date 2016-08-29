@@ -10,7 +10,7 @@
  */
 Channels.Channel = function (channel) {
 
-    this.id = channel.id;
+    this.id = channel.getAttribute('id');
     this.isRadio = channel.getElementsByTagName('isradio')[0].textContent != 'false';
     this.name = channel.getElementsByTagName('name')[0].textContent;
     this.logoUrl = channel.getElementsByTagName('logo')[0].textContent;

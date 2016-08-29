@@ -20,6 +20,15 @@ UrlParser.prototype.addUniqueParam = function (url) {
         .split('&');
 
     search.push('nc=' + (this.now + performance.now()).toString());
+    
+    // handle relative urls
+    if(this.parser.protocol === '' && this.parser.host === '') {
+        // On IE11 the pathname sometimes doesn't start with a slash
+        if(this.parser.pathname.indexOf('/') != 0) {
+            return '/' + this.parser.pathname + '?' + search.join('&');
+        }
+        return this.parser.pathname + '?' + search.join('&');
+    }
 
     return this.parser.protocol
         + '//'
