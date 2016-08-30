@@ -154,5 +154,5 @@ Channels.prototype.getChannelById = function (id) {
  */
 Channels.prototype.getLogoUrl = function (channel) {
 
-    return this.getChannelById(channel.id).getElementsByTagName('logo')[0].textContent;
+    return this.baseUrl + this.getChannelById(channel.id).getElementsByTagName('logo')[0].textContent;
 };
