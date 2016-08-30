@@ -9,6 +9,8 @@ body {
     width: 100vw;
     height: 100vh;
     background: white;
+    font-family: sans-serif;
+    line-height: 1.25;
 }
 
 .video-background {
@@ -77,7 +79,7 @@ video {
 }
 .channel-content {
     flex: 1 0 calc(85% - 10px);
-    padding: 5px;
+    padding: 2px 5px;
 }
 .channel .status-icon {
     position: absolute;
@@ -126,24 +128,13 @@ button {
     flex: 0 1 45%;
 }
 
-@media screen and (max-width: 640px) {
-
-    .video-size {
-        box-sizing: border-box;
-        padding-top: calc(100% / 1.777777777);
-        height: auto;
-    }
-    .channel-content {
-        font-size: 12px;
-    }
-}
-
 @media screen and (orientation: landscape) {
 
     body {
         justify-content: center;
         align-items: center;
         background: black;
+        font-size: 19px;
     }
 
     video {
@@ -178,5 +169,16 @@ button {
     }
     .channel.active {
         background-color: hsla(228, 100%, 80%, .5);
+    }
+}
+
+@media screen and (max-width: 640px) {
+
+    body {
+        font-size: 15px;
+    }
+
+    .channel-content {
+        font-size: .75em;
     }
 }
