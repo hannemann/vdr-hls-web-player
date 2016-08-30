@@ -16,6 +16,7 @@ body {
 .video-background {
     width: 100%;
     background: black;
+    flex: 0 0 calc(100vw / (16 / 9));
 }
 video {
     position: absolute;
@@ -25,6 +26,7 @@ video {
     margin: auto;
     max-width: 100%;
     max-height: 100%;
+    height: calc(100vw / (16 / 9));
 }
 
 #control {
