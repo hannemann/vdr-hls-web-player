@@ -29,6 +29,8 @@ HLSAbstract.prototype.addObserver = function () {
     this.video.addEventListener('progress', this.progressHandler);
     window.addEventListener('orientationchange', this.setDimensionHandler);
     window.addEventListener('resize', this.setDimensionHandler);
+    document.querySelector('#stop').addEventListener('click', this.stop.bind(this));
+    document.querySelector('#reload').addEventListener('click', this.channels.reload.bind(this.channels));
 };
 
 /**

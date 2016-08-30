@@ -221,3 +221,9 @@ VDRXMLApi.prototype.getAuth = function () {
     }
     return auth;
 };
+
+window.addEventListener('DOMContentLoaded', function () {
+
+    window.vdrXmlApi = new VDRXMLApi();
+    vdrXmlApi.init();
+});

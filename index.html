@@ -24,31 +24,20 @@
     <script src="./js/StreamControl.js"></script>
     <script src="./js/UrlParser.js"></script>
     <script src="./js/settings.js"></script>
-
-    <script type="text/javascript">
-        window.addEventListener('load', function () {
-
-            window.vdrXmlApi = new VDRXMLApi();
-            vdrXmlApi.init();
-        });
-    </script>
 </head>
 <body>
-
-<video id="video" controls></video>
-<div class="video-background">
-</div>
-<div id="control">
-    <div id="controls">
-        <div id="stop" onclick="vdrXmlApi.hls.stop()"><i class="fa fa-stop" aria-hidden="true"></i></div>
-
-        <div id="reload" onclick="vdrXmlApi.channels.reload()"><i class="fa fa-refresh" aria-hidden="true"></i></div>
-
-        <div id="presets-wrapper">
-            <select id="presets"></select>
-        </div>
+    <video id="video" controls></video>
+    <div class="video-background">
     </div>
-    <div id="channels"></div>
-</div>
+    <div id="control">
+        <div id="controls">
+            <div id="stop"><i class="fa fa-stop" aria-hidden="true"></i></div>
+            <div id="reload"><i class="fa fa-refresh" aria-hidden="true"></i></div>
+            <div id="presets-wrapper">
+                <select id="presets"></select>
+            </div>
+        </div>
+        <div id="channels"></div>
+    </div>
 </body>
 </html>
