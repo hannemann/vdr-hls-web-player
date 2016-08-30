@@ -25,7 +25,10 @@ HLSAbstract.prototype.defaultPreset = '';
 HLSAbstract.prototype.addObserver = function () {
 
     this.progressHandler = this.handleProgress.bind(this);
+    this.setDimensionHandler = this.handleSetDimension.bind(this);
     this.video.addEventListener('progress', this.progressHandler);
+    window.addEventListener('orientationchange', this.setDimensionHandler);
+    window.addEventListener('resize', this.setDimensionHandler);
 };
 
 /**
@@ -114,6 +117,16 @@ HLSAbstract.prototype.setPreset = function (preset) {
         this.presets.setActivePreset(preset.name);
     }
     this.setDimension();
+};
+
+/**
+ * wrap dimension setter
+ */
+HLSAbstract.prototype.handleSetDimension = function () {
+
+    setTimeout(function () {
+        this.setDimension();
+    }.bind(this), 200);
 };
 
 /**
