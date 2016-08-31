@@ -38,7 +38,7 @@ HLSAbstract.prototype.addObserver = function () {
  */
 HLSAbstract.prototype.play = function () {
 
-    this.currentChannel
+    this.currentMedia
         .removeError()
         .addSpinner()
         .setIsActive();
@@ -49,7 +49,7 @@ HLSAbstract.prototype.play = function () {
  */
 HLSAbstract.prototype.stop = function () {
 
-    this.currentChannel
+    this.currentMedia
         .removeSpinner()
         .unsetIsActive()
         .removeError();
@@ -61,7 +61,7 @@ HLSAbstract.prototype.stop = function () {
  */
 HLSAbstract.prototype.handleProgress = function () {
 
-    this.currentChannel
+    this.currentMedia
         .removeSpinner()
         .removeError();
 };
@@ -71,34 +71,52 @@ HLSAbstract.prototype.handleProgress = function () {
  */
 HLSAbstract.prototype.handleError = function () {
 
-    this.currentChannel
+    this.currentMedia
         .removeSpinner()
         .addError();
 };
 
 /**
  * retrieve stream source url
- * @param {string} channel
+ * @param {Channels.Channel|Recordings.Recording} media
  */
-HLSAbstract.prototype.getSource = function (channel) {
+HLSAbstract.prototype.getSource = function (media) {
 
     var url = [
         this.baseUrl + this.streamUrl
     ];
 
-    url.push(this.getParameters(channel));
+    if (media instanceof Channels.Channel) {
+
+        url.push(this.getChannelParameters(media.id));
+    } else {
+
+        url.push(this.getRecordingParameters(media.fileName));
+    }
 
     return url.join('?');
 };
 
 /**
- * retrieve stream source url parameters
+ * retrieve stream source url parameters for channel
  * @param {string} channel
  */
-HLSAbstract.prototype.getParameters = function (channel) {
+HLSAbstract.prototype.getChannelParameters = function (channel) {
 
     return [
         "chid=" + channel,
+        "preset=" + this.preset.name
+    ].join('&');
+};
+
+/**
+ * retrieve stream source url parameters for recording
+ * @param {string} filename
+ */
+HLSAbstract.prototype.getRecordingParameters = function (filename) {
+
+    return [
+        "filename=" + encodeURIComponent(filename),
         "preset=" + this.preset.name
     ].join('&');
 };

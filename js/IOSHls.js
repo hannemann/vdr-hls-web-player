@@ -17,7 +17,7 @@ IOSHls.prototype.init = function () {
     this.className = 'IOSHls';
     this.video = document.querySelector('video');
     this.addRestartHandler = true;
-    this.currentChannel = null;
+    this.currentMedia = null;
     this.initHandler().addObserver();
     this.info('initialized');
     return this;
@@ -44,7 +44,7 @@ IOSHls.prototype.addObserver = function () {
 IOSHls.prototype.play = function (channel) {
 
     var src;
-    this.currentChannel = channel;
+    this.currentMedia = channel;
     HLSAbstract.prototype.play.apply(this);
     this.info('play request');
 
@@ -73,6 +73,6 @@ IOSHls.prototype.stop = function () {
 
 IOSHls.prototype.restart = function () {
 
-    this.play(this.currentChannel);
+    this.play(this.currentMedia);
     this.video.removeEventListener('playing', this.handleVideoPlaying);
 };

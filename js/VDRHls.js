@@ -33,7 +33,7 @@ VDRHls.prototype.init = function () {
     this.video = document.querySelector('video');
     this.urlParser = new UrlParser();
     this.preservePoster = false;
-    this.currentChannel = null;
+    this.currentMedia = null;
     this.initHandler().addVideoObserver();
     this.info('initialized');
     return this;
@@ -70,7 +70,9 @@ VDRHls.prototype.addVideoObserver = function () {
 
     this.video.addEventListener('canplay', function () {
         this.info('Video: can play video now');
-        this.video.poster = this.channels.getLogoUrl(this.currentChannel);
+        if (this.currentMedia instanceof Channels.Channel) {
+            this.video.poster = this.channels.getLogoUrl(this.currentMedia);
+        }
 
     }.bind(this));
 
@@ -142,12 +144,12 @@ VDRHls.prototype.stop = function () {
 
 /**
  * start playback
- * @param {Channels.Channel} channel
+ * @param {Channels.Channel|Recordings.Recording} media
  */
-VDRHls.prototype.play = function (channel) {
+VDRHls.prototype.play = function (media) {
 
     var src;
-    this.currentChannel = channel;
+    this.currentMedia = media;
 
     if (this.controller) {
         this.info('Video playing, set poster');
@@ -160,7 +162,7 @@ VDRHls.prototype.play = function (channel) {
 
     HLSAbstract.prototype.play.apply(this);
     this.info('play request');
-    src = this.getSource(channel.id);
+    src = this.getSource(media);
     this.info('fetch video from %s', src);
     this.getHlsController();
     this.addObserver();

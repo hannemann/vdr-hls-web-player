@@ -6,7 +6,7 @@ Channels = function () {};
 /**
  * @type {VDRXMLApi}
  */
-Channels.prototype = new VDRXMLApi();
+Channels.prototype = new MediaContainer();
 
 /**
  * @type {string}
@@ -17,6 +17,16 @@ Channels.prototype.url = 'channels.xml';
  * @type {string}
  */
 Channels.prototype.method = 'GET';
+
+/**
+ * @type {string}
+ */
+Channels.prototype.buttonSelector = '#channels-button';
+
+/**
+ * @type {string}
+ */
+Channels.prototype.containerSelector = '#channels';
 
 /**
  * @type {{}}
@@ -32,18 +42,8 @@ Channels.prototype.init = function () {
     this.className = 'Channels';
     this.handleReadyState = this.readyStateHandler.bind(this);
 
-    this.getElement().addObserver().load();
+    this.initElements().showMedia().addObserver().load();
     this.info('initialized');
-    return this;
-};
-
-/**
- * fetch element
- * @return {Channels}
- */
-Channels.prototype.getElement = function () {
-
-    this.element = document.querySelector('#channels');
     return this;
 };
 
@@ -53,14 +53,17 @@ Channels.prototype.getElement = function () {
  */
 Channels.prototype.addObserver = function () {
 
-    window.addEventListener('orientationchange', function () {
+    //window.addEventListener('orientationchange', function () {
+    //
+    //    var firstVisible = this.getFirstVisbleChannel();
+    //    setTimeout(function () {
+    //        firstVisible.element.scrollIntoView();
+    //        this.element.scrollTop += firstVisible.element.offsetHeight * firstVisible.offset / 100;
+    //    }.bind(this), 200);
+    //}.bind(this));
 
-        var firstVisible = this.getFirstVisbleChannel();
-        setTimeout(function () {
-            firstVisible.element.scrollIntoView();
-            this.element.scrollTop += firstVisible.element.offsetHeight * firstVisible.offset / 100;
-        }.bind(this), 200);
-    }.bind(this));
+    this.button.addEventListener('click', this.showMedia.bind(this));
+
     return this;
 };
 
@@ -130,8 +133,8 @@ Channels.prototype.reload = function () {
     }
 
     this.addChannels();
-    if (this.hls.currentChannel) {
-        this.channelButtons[this.hls.currentChannel].element.classList.add('active');
+    if (this.hls.currentMedia) {
+        this.channelButtons[this.hls.currentMedia].element.classList.add('active');
     }
 
     this.element.scrollTop = scrollTop;

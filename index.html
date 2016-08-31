@@ -16,8 +16,13 @@
     <script src="./js/HLSAbstract.js"></script>
     <script src="./js/VDRHls.js"></script>
     <script src="./js/IOSHls.js"></script>
+    <script src="./js/MediaContainer.js"></script>
+    <script src="./js/MediaItem.js"></script>
     <script src="./js/Channels.js"></script>
+    <script src="./js/Recordings.js"></script>
     <script src="./js/Channels/Channel.js"></script>
+    <script src="./js/Recordings.js"></script>
+    <script src="./js/Recordings/Recording.js"></script>
     <script src="./js/DVBEvent.js"></script>
     <script src="./js/Presets.js"></script>
     <script src="./js/Presets/Preset.js"></script>
@@ -32,11 +37,14 @@
         <div id="controls">
             <div id="stop"><i class="fa fa-stop" aria-hidden="true"></i></div>
             <div id="reload"><i class="fa fa-refresh" aria-hidden="true"></i></div>
+            <div id="channels-button"><i class="fa fa-television" aria-hidden="true"></i></div>
+            <div id="recordings-button"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
             <div id="presets-wrapper">
                 <select id="presets"></select>
             </div>
         </div>
-        <div id="channels"></div>
+        <div id="channels" class="media-container"></div>
+        <div id="recordings" class="media-container"></div>
     </div>
 </body>
 </html>
