@@ -138,8 +138,15 @@ HLSAbstract.prototype.setDimension = function () {
 
     var bg = document.querySelector('.video-background'),
         video = document.querySelector('video'),
-        height = window.innerWidth  / (this.preset.width / this.preset.height);
+        height;
 
+    if (!this.preset) {
+        this.preset = {
+            "width" : 16,
+            "height" : 9
+        }
+    }
+    height = window.innerWidth  / (this.preset.width / this.preset.height);
     bg.style.flex = '0 0 ' + height + 'px';
     video.style.height = height + 'px';
 };
