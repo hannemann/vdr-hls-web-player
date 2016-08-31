@@ -195,13 +195,17 @@ VDRXMLApi.prototype.getDefaultPreset = function () {
 
 /**
  * load channels
+ * @param {string} [responseType]
  */
-VDRXMLApi.prototype.load = function () {
+VDRXMLApi.prototype.load = function (responseType) {
 
     var xhr = new XMLHttpRequest(),
         auth = this.getAuth();
     xhr.open(this.method, this.baseUrl + this.url, true);
     xhr.onreadystatechange = this.handleReadyState;
+    if ("undefined" !== typeof responseType) {
+        xhr.responseType = responseType;
+    }
     if (auth) {
         xhr.setRequestHeader("Authorization", auth);
     }
