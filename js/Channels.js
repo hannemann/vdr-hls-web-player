@@ -143,11 +143,11 @@ Channels.prototype.reload = function () {
 /**
  * retrieve channel with given id
  * @param {string} id
- * @return {Element}
+ * @return {Channels.Channel}
  */
 Channels.prototype.getChannelById = function (id) {
 
-    return this.channels.getElementById(id);
+    return this.channelButtons[id];
 };
 
 /**
@@ -157,5 +157,5 @@ Channels.prototype.getChannelById = function (id) {
  */
 Channels.prototype.getLogoUrl = function (channel) {
 
-    return this.baseUrl + this.getChannelById(channel.id).getElementsByTagName('logo')[0].textContent;
+    return this.getChannelById(channel.id).element.querySelector('.media-item-logo').src;
 };
