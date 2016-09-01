@@ -61,7 +61,7 @@ Recordings.Recording.prototype.getInnerHTML = function () {
  */
 Recordings.Recording.prototype.getStreamParameter = function () {
 
-    return "filename=" + this.filename;
+    return "filename=" + encodeURIComponent(this.filename);
 };
 
 /**
