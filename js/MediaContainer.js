@@ -63,13 +63,15 @@ MediaContainer.prototype.addObserver = function () {
  */
 MediaContainer.prototype.showMedia = function () {
 
+    MediaContainer.prototype.currentMediaContainer = this;
+
+    this.unsetFilter().search.hide();
+
     Array.prototype.slice.apply(document.querySelectorAll('.media-container')).forEach(function (container) {
         container.style.display = 'none';
     });
 
     this.element.style.display = 'block';
-
-    MediaContainer.prototype.currentMediaContainer = this;
 
     return this;
 };
@@ -167,6 +169,23 @@ MediaContainer.prototype.filter = function (token) {
             this.mediaItems[i].applyFilter(token);
         }
     }
+};
+
+/**
+ * unset filter
+ * @return {MediaContainer}
+ */
+MediaContainer.prototype.unsetFilter = function () {
+
+    var i;
+
+    for (i in this.mediaItems) {
+        if (this.mediaItems.hasOwnProperty(i)) {
+            this.mediaItems[i].element.style.display = '';
+        }
+    }
+
+    return this;
 };
 
 /**

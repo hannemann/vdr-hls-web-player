@@ -42,14 +42,14 @@ VDRXMLApi.prototype.init = function () {
         VDRXMLApi.prototype.hls = new IOSHls();
     }
     VDRXMLApi.prototype.presets = new Presets();
+    VDRXMLApi.prototype.search = new Search();
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.recordings = new Recordings();
-    this.search = new Search();
     this.presets.init();
+    this.search.init();
     this.channels.init();
     this.recordings.init();
     this.hls.init();
-    this.search.init();
     this.addObserver();
 };
 

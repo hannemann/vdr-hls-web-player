@@ -138,6 +138,7 @@ button {
     background: #9facc6;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 #search input {
@@ -160,6 +161,18 @@ button {
     border: 1px solid hsla(220,25%,50%,1);
     box-shadow: inset 0 0 10px 1px #9c9c9c;
     padding: 3px;
+}
+#search .fa-times-circle {
+    font-size: 0;
+    transition: font-size 100ms ease-out;
+}
+#search.active .fa-times-circle {
+    position: absolute;
+    top: 50%;
+    margin-top: -7px;
+    right: 13px;
+    color: #909090;
+    font-size: 14px;
 }
 
 @media screen and (orientation: landscape) {
