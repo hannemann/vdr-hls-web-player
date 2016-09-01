@@ -8,7 +8,7 @@
  * @property {string} name
  * @property {string} logoUrl
  */
-Channels.Channel = function (channel) {
+Channels.Channel = function (channel, container) {
 
     this.id = channel.getAttribute('id');
     this.isRadio = channel.getElementsByTagName('isradio')[0].textContent != 'false';
@@ -16,6 +16,7 @@ Channels.Channel = function (channel) {
     this.url = channel.getElementsByTagName('logo')[0].textContent;
     this.method = 'GET';
     this.className = 'Channel';
+    this.container = container;
 };
 
 /**
@@ -99,6 +100,21 @@ Channels.Channel.prototype.parseImageResponse = function (e) {
 Channels.Channel.prototype.getStreamParameter = function () {
 
     return "chid=" + this.id;
+};
+
+/**
+ * apply filter
+ * @param {string} token
+ */
+Channels.Channel.prototype.applyFilter = function (token) {
+
+    if ( !(this.name.toLowerCase().indexOf(token) > -1 || this.event.hasToken(token)) ) {
+
+        this.element.style.display = 'none';
+    } else {
+
+        this.element.style.display = '';
+    }
 };
 
 /**

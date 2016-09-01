@@ -102,26 +102,34 @@ DVBEvent.prototype.getEnd = function () {
 
 DVBEvent.prototype.getTitle = function () {
 
-    var node = this.event.getElementsByTagName('title')[0],
-        title = 'n.a.';
+    return '<span class="event-title">' + this.getTitleText() + '</span>';
+};
+
+DVBEvent.prototype.getTitleText = function () {
+
+    var node = this.event.getElementsByTagName('title')[0];
 
     if (node) {
-        title = node.textContent;
+        return node.textContent;
     }
 
-    return '<span class="event-title">' + title + '</span>';
+    return 'n.a.';
 };
 
 DVBEvent.prototype.getShortText = function () {
 
-    var node = this.event.getElementsByTagName('shorttext')[0],
-        shortText = 'n.a.';
+    return '<span class="event-shorttext">' + this.getShortTextText() + '</span>';
+};
+
+DVBEvent.prototype.getShortTextText = function () {
+
+    var node = this.event.getElementsByTagName('shorttext')[0];
 
     if (node) {
-        shortText = node.textContent;
+        return node.textContent;
     }
 
-    return '<span class="event-shorttext">' + shortText + '</span>';
+    return 'n.a.';
 };
 
 DVBEvent.prototype.getDescription = function () {
@@ -134,4 +142,22 @@ DVBEvent.prototype.getDescription = function () {
     }
 
     return '<div class="event-description">' + description + '</div>';
+};
+
+DVBEvent.prototype.getDescriptionText = function () {
+
+    var node = this.event.getElementsByTagName('description')[0];
+
+    if (node) {
+        return node.textContent;
+    }
+
+    return 'n.a.';
+};
+
+DVBEvent.prototype.hasToken = function (token) {
+
+    return this.getTitleText().toLowerCase().indexOf(token) > -1
+        || this.getShortTextText().toLowerCase().indexOf(token) > -1
+        || this.getDescriptionText().toLowerCase().indexOf(token) > -1;
 };

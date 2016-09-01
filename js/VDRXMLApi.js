@@ -41,13 +41,15 @@ VDRXMLApi.prototype.init = function () {
         // assume ios client
         VDRXMLApi.prototype.hls = new IOSHls();
     }
+    VDRXMLApi.prototype.presets = new Presets();
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.recordings = new Recordings();
-    VDRXMLApi.prototype.presets = new Presets();
+    this.search = new Search();
     this.presets.init();
     this.channels.init();
     this.recordings.init();
     this.hls.init();
+    this.search.init();
     this.addObserver();
 };
 

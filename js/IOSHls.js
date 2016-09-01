@@ -39,12 +39,12 @@ IOSHls.prototype.addObserver = function () {
 
 /**
  * play
- * @param {Channels.Channel} channel
+ * @param {Channels.Channel} media
  */
-IOSHls.prototype.play = function (channel) {
+IOSHls.prototype.play = function (media) {
 
     var src;
-    this.currentMedia = channel;
+    this.currentMedia = media;
     HLSAbstract.prototype.play.apply(this);
     this.info('play request');
 

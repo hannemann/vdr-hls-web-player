@@ -2,7 +2,7 @@
  * @param recording
  * @constructor
  */
-Recordings.Recording = function (recording) {
+Recordings.Recording = function (recording, container) {
 
     this.name = recording.getElementsByTagName('name')[0].textContent;
     this.filename = recording.getElementsByTagName('filename')[0].textContent;
@@ -16,6 +16,7 @@ Recordings.Recording = function (recording) {
     this.channelName = recording.getElementsByTagName('channelname')[0].textContent;
     this.shortText = recording.getElementsByTagName('shorttext')[0].textContent;
     this.description = recording.getElementsByTagName('description')[0].textContent;
+    this.container = container;
 };
 
 /**
@@ -61,6 +62,32 @@ Recordings.Recording.prototype.getInnerHTML = function () {
 Recordings.Recording.prototype.getStreamParameter = function () {
 
     return "filename=" + this.filename;
+};
+
+/**
+ * apply filter
+ * @param {string} token
+ */
+Recordings.Recording.prototype.applyFilter = function (token) {
+
+    if (
+        !(
+            this.name.toLowerCase().indexOf(token) > -1
+            || this.filename.toLowerCase().indexOf(token) > -1
+            || this.dateTitle.toLowerCase().indexOf(token) > -1
+            || this.title.toLowerCase().indexOf(token) > -1
+            || this.channelId.toLowerCase().indexOf(token) > -1
+            || this.channelName.toLowerCase().indexOf(token) > -1
+            || this.shortText.toLowerCase().indexOf(token) > -1
+            || this.description.toLowerCase().indexOf(token) > -1
+        )
+    ) {
+
+        this.element.style.display = 'none';
+    } else {
+
+        this.element.style.display = '';
+    }
 };
 
 /**

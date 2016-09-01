@@ -122,7 +122,7 @@ MediaContainer.prototype.addItems = function () {
             : item.getElementsByTagName(this.itemIdFieldName)[0].textContent;
 
         this.info('Adding item, %s', id);
-        this.mediaItems[id] = new this.itemClass(item);
+        this.mediaItems[id] = new this.itemClass(item, this);
         this.mediaItems[id].init();
     }.bind(this));
 
@@ -151,6 +151,21 @@ MediaContainer.prototype.restoreState = function () {
     if (this.scrollTop) {
         this.element.scrollTop = this.scrollTop;
         delete this.scrollTop;
+    }
+};
+
+/**
+ * filter all items
+ * @param {string} token
+ */
+MediaContainer.prototype.filter = function (token) {
+
+    var i;
+
+    for (i in this.mediaItems) {
+        if (this.mediaItems.hasOwnProperty(i)) {
+            this.mediaItems[i].applyFilter(token);
+        }
     }
 };
 

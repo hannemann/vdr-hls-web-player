@@ -28,6 +28,7 @@
     <script src="./js/Presets/Preset.js"></script>
     <script src="./js/StreamControl.js"></script>
     <script src="./js/UrlParser.js"></script>
+    <script src="./js/Search.js"></script>
     <script src="./js/settings.js"></script>
 </head>
 <body>
@@ -39,12 +40,13 @@
             <div class="control-button" id="reload"><i class="fa fa-refresh" aria-hidden="true"></i></div>
             <div class="control-button" id="channels-button"><i class="fa fa-television" aria-hidden="true"></i></div>
             <div class="control-button" id="recordings-button"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
-            <!--<div class="control-button" id="search-button"><i class="fa fa-search" aria-hidden="true"></i></div>-->
+            <div class="control-button" id="search-button"><i class="fa fa-search" aria-hidden="true"></i></div>
             <div class="control-button" id="presets-wrapper">
                 <select id="presets"></select>
             </div>
             <!--<div class="control-button" id="settings-button"><i class="fa fa-cog" aria-hidden="true"></i></div>-->
         </div>
+        <div id="search"><input></div>
         <div id="channels" class="media-container"></div>
         <div id="recordings" class="media-container"></div>
     </div>
