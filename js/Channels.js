@@ -69,15 +69,6 @@ Channels.prototype.init = function () {
  */
 Channels.prototype.addObserver = function () {
 
-    //window.addEventListener('orientationchange', function () {
-    //
-    //    var firstVisible = this.getFirstVisbleChannel();
-    //    setTimeout(function () {
-    //        firstVisible.element.scrollIntoView();
-    //        this.element.scrollTop += firstVisible.element.offsetHeight * firstVisible.offset / 100;
-    //    }.bind(this), 200);
-    //}.bind(this));
-
     this.button.addEventListener('click', this.showMedia.bind(this));
     MediaContainer.prototype.addObserver.apply(this);
 
@@ -103,24 +94,3 @@ Channels.prototype.getLogoUrl = function (channel) {
 
     return this.getChannelById(channel.id).element.querySelector('.media-item-logo').src;
 };
-
-//Channels.prototype.getFirstVisbleChannel = function () {
-//
-//    var i,
-//        elementTop = this.element.getBoundingClientRect().top,
-//        bottom;
-//
-//    for (i in this.mediaItems) {
-//        if (this.mediaItems.hasOwnProperty(i)) {
-//
-//            bottom = this.mediaItems[i].element.getBoundingClientRect().bottom;
-//            if (bottom > elementTop) {
-//
-//                return {
-//                    "element" : this.mediaItems[i].element,
-//                    "offset" : 100 * (bottom - elementTop) / this.mediaItems[i].element.offsetHeight
-//                };
-//            }
-//        }
-//    }
-//};
