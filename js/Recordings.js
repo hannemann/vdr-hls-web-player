@@ -28,18 +28,24 @@ Recordings.prototype.buttonSelector = '#recordings-button';
  */
 Recordings.prototype.containerSelector = '#recordings';
 
-Recordings.prototype.buttons = {};
+/**
+ * @type {string}
+ */
+Recordings.prototype.itemIdFieldName = 'filename';
+
+/**
+ * @type {string}
+ */
+Recordings.prototype.itemTagName = 'recording';
 
 /**
  * initialize
  */
 Recordings.prototype.init = function () {
 
-    this.isLoaded = false;
-
-    this.initElements()
-        .initHandler()
-        .addObserver();
+    this.doReload = this.load;
+    this.itemClass = Recordings.Recording;
+    MediaContainer.prototype.init.apply(this);
 };
 
 /**
@@ -48,8 +54,8 @@ Recordings.prototype.init = function () {
  */
 Recordings.prototype.initHandler = function () {
 
-    this.handleReadyState = this.readyStateHandler.bind(this);
-    this.loadRecordings = this.handleRequest.bind(this);
+    MediaContainer.prototype.initHandler.apply(this);
+    this.loadItems = this.handleShowItemsRequest.bind(this);
     return this;
 };
 
@@ -59,7 +65,8 @@ Recordings.prototype.initHandler = function () {
  */
 Recordings.prototype.addObserver = function () {
 
-    this.button.addEventListener('click', this.loadRecordings);
+    this.button.addEventListener('click', this.loadItems);
+    MediaContainer.prototype.addObserver.apply(this);
     return this;
 };
 
@@ -67,47 +74,11 @@ Recordings.prototype.addObserver = function () {
  * handle load request
  * @return {Recordings}
  */
-Recordings.prototype.handleRequest = function () {
+Recordings.prototype.handleShowItemsRequest = function () {
 
     this.showMedia();
     if (!this.isLoaded) {
         this.load();
     }
-    return this;
-};
-
-/**
- * handle xhr ready state
- * @param {Event} e
- * @param {XMLHttpRequest} e.target
- * @return {Recordings}
- */
-Recordings.prototype.readyStateHandler = function (e) {
-
-    var xhr = e.target;
-
-    if (4 === xhr.readyState && 200 === xhr.status) {
-        this.recordings = xhr.responseXML;
-        this.info('recordings loaded');
-        this.addRecordings();
-    }
-
-    return this;
-};
-
-Recordings.prototype.addRecordings = function (e) {
-
-    var recordings = Array.prototype.slice.apply(this.recordings.getElementsByTagName('recording'));
-
-    if (recordings.length > 0) {
-        this.isLoaded = true;
-    }
-
-    recordings.forEach(function (recording) {
-        this.info('Adding channel %s', recording.getElementsByTagName('name')[0].textContent);
-        this.buttons[recording.getElementsByTagName('filename')[0].textContent] = new Recordings.Recording(recording);
-        this.buttons[recording.getElementsByTagName('filename')[0].textContent].init();
-    }.bind(this));
-
     return this;
 };

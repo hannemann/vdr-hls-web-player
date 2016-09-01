@@ -162,7 +162,7 @@ VDRHls.prototype.play = function (media) {
 
     HLSAbstract.prototype.play.apply(this);
     this.info('play request');
-    src = this.getSource(media);
+    src = this.getSource();
     this.info('fetch video from %s', src);
     this.getHlsController();
     this.addObserver();

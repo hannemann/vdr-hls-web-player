@@ -1,7 +1,11 @@
+/**
+ * @param recording
+ * @constructor
+ */
 Recordings.Recording = function (recording) {
 
     this.name = recording.getElementsByTagName('name')[0].textContent;
-    this.fileName = recording.getElementsByTagName('filename')[0].textContent;
+    this.filename = recording.getElementsByTagName('filename')[0].textContent;
     this.dateTitle = recording.getElementsByTagName('title')[0].textContent;
     this.duration = parseInt(recording.getElementsByTagName('duration')[0].textContent, 10);
     this.inuse = recording.getElementsByTagName('inuse')[0].textContent;
@@ -14,6 +18,9 @@ Recordings.Recording = function (recording) {
     this.description = recording.getElementsByTagName('description')[0].textContent;
 };
 
+/**
+ * @type {MediaItem}
+ */
 Recordings.Recording.prototype = new MediaItem();
 
 /**
@@ -45,4 +52,22 @@ Recordings.Recording.prototype.getInnerHTML = function () {
         + '</div>';
 
     return html;
+};
+
+/**
+ * retrieve stream parameter
+ * @return {string}
+ */
+Recordings.Recording.prototype.getStreamParameter = function () {
+
+    return "filename=" + this.filename;
+};
+
+/**
+ * remove
+ */
+Recordings.Recording.prototype.remove = function () {
+
+    this.removeObserver();
+    this.element.parentNode.removeChild(this.element);
 };

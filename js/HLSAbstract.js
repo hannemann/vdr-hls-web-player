@@ -30,7 +30,6 @@ HLSAbstract.prototype.addObserver = function () {
     window.addEventListener('orientationchange', this.setDimensionHandler);
     window.addEventListener('resize', this.setDimensionHandler);
     document.querySelector('#stop').addEventListener('click', this.stop.bind(this));
-    document.querySelector('#reload').addEventListener('click', this.channels.reload.bind(this.channels));
 };
 
 /**
@@ -78,47 +77,18 @@ HLSAbstract.prototype.handleError = function () {
 
 /**
  * retrieve stream source url
- * @param {Channels.Channel|Recordings.Recording} media
  */
-HLSAbstract.prototype.getSource = function (media) {
+HLSAbstract.prototype.getSource = function () {
 
-    var url = [
-        this.baseUrl + this.streamUrl
-    ];
-
-    if (media instanceof Recordings.Recording) {
-
-        url.push(this.getRecordingParameters(media.fileName));
-    } else {
-
-        url.push(this.getChannelParameters(media.id));
-    }
-
-    return url.join('?');
+    return this.baseUrl + this.streamUrl + '?' + this.getStreamParameters();
 };
 
 /**
- * retrieve stream source url parameters for channel
- * @param {string} channel
+ * retrieve stream source url parameters
  */
-HLSAbstract.prototype.getChannelParameters = function (channel) {
+HLSAbstract.prototype.getStreamParameters = function () {
 
-    return [
-        "chid=" + channel,
-        "preset=" + this.preset.name
-    ].join('&');
-};
-
-/**
- * retrieve stream source url parameters for recording
- * @param {string} filename
- */
-HLSAbstract.prototype.getRecordingParameters = function (filename) {
-
-    return [
-        "filename=" + encodeURIComponent(filename),
-        "preset=" + this.preset.name
-    ].join('&');
+    return this.currentMedia.getStreamParameter() + '&preset=' + this.preset.name;
 };
 
 

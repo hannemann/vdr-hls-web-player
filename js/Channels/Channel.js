@@ -93,6 +93,15 @@ Channels.Channel.prototype.parseImageResponse = function (e) {
 };
 
 /**
+ * retrieve stream parameter
+ * @return {string}
+ */
+Channels.Channel.prototype.getStreamParameter = function () {
+
+    return "chid=" + this.id;
+};
+
+/**
  * remove
  */
 Channels.Channel.prototype.remove = function () {
