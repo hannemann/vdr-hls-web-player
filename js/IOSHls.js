@@ -54,7 +54,7 @@ IOSHls.prototype.play = function (channel) {
     } else {
         this.addRestartHandler = true;
     }
-    src = this.getSource(channel.id);
+    src = this.getSource(channel);
     this.video.src = src;
     this.video.play();
     this.info('fetch video from %s', src);

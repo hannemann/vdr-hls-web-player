@@ -39,7 +39,7 @@ video {
     display: flex;
     justify-content: space-around;
     padding: 6px 0;
-    flex: 1 0 24px;
+    flex: 0 0 24px;
     background: hsla(220,25%,70%,1);
 }
 #controls > div {
@@ -55,7 +55,6 @@ video {
     display: none;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    flex: 0 1 100%;
 }
 
 .media-item {

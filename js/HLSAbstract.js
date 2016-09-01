@@ -86,12 +86,12 @@ HLSAbstract.prototype.getSource = function (media) {
         this.baseUrl + this.streamUrl
     ];
 
-    if (media instanceof Channels.Channel) {
-
-        url.push(this.getChannelParameters(media.id));
-    } else {
+    if (media instanceof Recordings.Recording) {
 
         url.push(this.getRecordingParameters(media.fileName));
+    } else {
+
+        url.push(this.getChannelParameters(media.id));
     }
 
     return url.join('?');
