@@ -48,6 +48,9 @@ video {
     align-items: center;
     flex: 0 1 100%;
 }
+.control-button {
+    cursor: default;
+}
 .media-container {
     display: none;
     overflow: auto;
