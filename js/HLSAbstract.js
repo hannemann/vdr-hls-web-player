@@ -80,7 +80,7 @@ HLSAbstract.prototype.handleError = function () {
  */
 HLSAbstract.prototype.getSource = function () {
 
-    return this.baseUrl + this.streamUrl + '?' + this.getStreamParameters();
+    return this.getBaseUrl() + this.streamUrl + '?' + this.getStreamParameters();
 };
 
 /**

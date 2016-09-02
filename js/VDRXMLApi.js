@@ -30,10 +30,22 @@ VDRXMLApi.prototype.username = null;
 VDRXMLApi.prototype.password = null;
 
 /**
+ * @type {string|null}
+ */
+VDRXMLApi.prototype.auth = null;
+
+/**
+ * @type {string|null}
+ */
+VDRXMLApi.prototype.baseUrl = null;
+
+/**
  * initialize
  */
 VDRXMLApi.prototype.init = function () {
 
+    VDRXMLApi.prototype.settings = new Settings();
+    this.settings.init();
     this.getErrorLevel().getDefaultPreset();
     if (Hls.isSupported()) {
         VDRXMLApi.prototype.hls = new VDRHls();
@@ -194,6 +206,11 @@ VDRXMLApi.prototype.getDefaultPreset = function () {
         HLSAbstract.prototype.defaultPreset = preset[0].split('=')[1];
     }
 
+    if ((preset = this.settings.get('defaultPreset'))) {
+
+        HLSAbstract.prototype.defaultPreset = preset;
+    }
+
     return this;
 };
 
@@ -205,7 +222,7 @@ VDRXMLApi.prototype.load = function (responseType) {
 
     var xhr = new XMLHttpRequest(),
         auth = this.getAuth();
-    xhr.open(this.method, this.baseUrl + this.url, true);
+    xhr.open(this.method, this.getBaseUrl() + this.url, true);
     xhr.onreadystatechange = this.handleReadyState;
     if ("undefined" !== typeof responseType) {
         xhr.responseType = responseType;
@@ -217,17 +234,34 @@ VDRXMLApi.prototype.load = function (responseType) {
 };
 
 /**
+ * return {string}
+ */
+VDRXMLApi.prototype.getBaseUrl = function () {
+
+    var url = this.settings.get('baseUrl');
+
+    if (url[url.length - 1] !== '/') {
+        url += '/';
+        this.settings.set('baseUrl', url);
+    }
+
+    return this.settings.get('baseUrl');
+};
+
+/**
  * retrieve authorization string
  * @return {string|null}
  */
 VDRXMLApi.prototype.getAuth = function () {
 
-    var auth = null;
+    var username, password;
 
-    if (this.password && this.password != '' && this.username && this.username != '') {
-        auth = "Basic " + btoa(this.username + ":" + this.password);
+    if (!this.auth) {
+        if ((password = this.settings.get('password')) && (username = this.settings.get('username'))) {
+            this.auth = "Basic " + btoa(username + ":" + password);
+        }
     }
-    return auth;
+    return this.auth;
 };
 
 window.addEventListener('DOMContentLoaded', function () {

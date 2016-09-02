@@ -10,9 +10,11 @@
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link rel="stylesheet" href="./css/font-awesome-4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/video.css">
+    <link rel="stylesheet" href="./css/settings.css">
 
     <script src="./js/hls.js"></script>
     <script src="./js/VDRXMLApi.js"></script>
+    <script src="./js/Settings.js"></script>
     <script src="./js/HLSAbstract.js"></script>
     <script src="./js/VDRHls.js"></script>
     <script src="./js/IOSHls.js"></script>
@@ -29,7 +31,6 @@
     <script src="./js/StreamControl.js"></script>
     <script src="./js/UrlParser.js"></script>
     <script src="./js/Search.js"></script>
-    <script src="./js/settings.js"></script>
 </head>
 <body>
     <video id="video" controls></video>
@@ -44,7 +45,7 @@
             <div class="control-button" id="presets-wrapper">
                 <select id="presets"></select>
             </div>
-            <!--<div class="control-button" id="settings-button"><i class="fa fa-cog" aria-hidden="true"></i></div>-->
+            <div class="control-button" id="settings-button"><i class="fa fa-cog" aria-hidden="true"></i></div>
         </div>
         <div id="search"><input><i class="fa fa-times-circle" aria-hidden="true"></i></div>
         <div id="channels" class="media-container"></div>

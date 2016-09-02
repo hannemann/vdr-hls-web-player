@@ -15,7 +15,7 @@ Presets.prototype.method = 'GET';
 /**
  * @type {{}}
  */
-Presets.prototype.presetButtons = {};
+Presets.prototype.items = {};
 
 Presets.prototype.init = function () {
 
@@ -73,7 +73,7 @@ Presets.prototype.addPresets = function () {
     for (name in presets) {
         if (presets.hasOwnProperty(name)) {
 
-            this.presetButtons[name] = new Presets.Preset(name, presets[name]);
+            this.items[name] = new Presets.Preset(name, presets[name]);
             if (name === VDRHls.prototype.defaultPreset) {
                 this.currentPreset = name;
             }
@@ -101,12 +101,12 @@ Presets.prototype.setActivePreset = function (presetName) {
  */
 Presets.prototype.get = function (name) {
 
-    return this.presetButtons[name];
+    return this.items[name];
 };
 
 Presets.prototype.changeHandler = function () {
 
-    this.hls.setPreset(this.presetButtons[this.element.options[this.element.selectedIndex].value]);
+    this.hls.setPreset(this.items[this.element.options[this.element.selectedIndex].value]);
 };
 
 Presets.prototype.parseIniFile = function () {

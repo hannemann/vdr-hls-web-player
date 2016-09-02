@@ -1,0 +1,24 @@
+#settings {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1f1f1f;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    padding: 10px;
+    color: #e2e2e2;
+}
+
+#settings input {
+    border-radius: 3px;
+    outline: none;
+    flex-basis: 24px;
+    border: none;
+    padding: 3px;
+    height: auto;
+    background: #1f1f1f;
+    color: white;
+}

@@ -4,7 +4,11 @@ This is a prototype of a web based client for playing around with the streaming 
 To implement HLS Streaming in Google Chrome and Firefox the [dailymotion hls.js API](https://github.com/dailymotion/hls.js) is used.
 
 ## Settings
-Please add your settings to /js/settings.js as shown in /js/settings.js.sample
+Hit the cog symbol to type in your settings
+* Base URL: The base url of xmlapi plugin
+* Username
+* Password
+* Default preset: the name of the default preset
 
 #### Authentication
 Not supported yet in xmlapi please use [my fork](https://github.com/hannemann/vdr-plugin-xmlapi) if you really need it right now.
@@ -26,6 +30,10 @@ My box transcodes live tv at about 30% CPU using a Geforce GT 630
 
 * Intel(R) Celeron(R) CPU G1610T @ 2.30GHz
 * 01:00.0 VGA compatible controller: NVIDIA Corporation GK208 [GeForce GT 630 Rev. 2] (rev a1)
+
+## Notes on IOS
+since i don't own an ios device its hard for me to test anything if i change something, but i try not to break compatibility.
+I was not able to stream via HTTPS with a self signed certificat or using authentication for now. If you have any ideas about this please contact me. 
 
 Have fun
 

@@ -128,6 +128,11 @@ video {
     background-color: #dce3ff;
 }
 
+select:focus,
+input:focus {
+    outline: none;
+}
+
 button {
     min-height: 30px;
     flex: 0 1 45%;
