@@ -31,11 +31,46 @@ Recordings.Recording.prototype = new MediaItem();
 Recordings.Recording.prototype.addElement = function () {
 
     this.element = document.createElement('div');
-    this.element.classList.add('media-item');
+    this.element.classList.add('media-item', 'hide-description');
     this.element.innerHTML = this.getInnerHTML();
 
     this.recordings.element.appendChild(this.element);
 
+    this.descriptionButton = this.element.querySelector('.media-shorttext');
+
+    return this;
+};
+
+/**
+ * initialize handler
+ * @return {Recordings.Recording}
+ */
+Recordings.Recording.prototype.initHandler = function () {
+
+    this.handleShowDescription = this.showDescriptionHandler.bind(this);
+    MediaItem.prototype.initHandler.apply(this);
+    return this;
+};
+
+/**
+ * add event listeners
+ * @return {Recordings.Recording}
+ */
+Recordings.Recording.prototype.addObserver = function () {
+
+    this.descriptionButton.addEventListener('click', this.handleShowDescription);
+    MediaItem.prototype.addObserver.apply(this);
+    return this;
+};
+
+/**
+ * remove event listeners
+ * @return {Recordings.Recording}
+ */
+Recordings.Recording.prototype.removeObserver = function () {
+
+    this.descriptionButton.removeEventListener('click', this.handleShowDescription);
+    MediaItem.prototype.removeObserver.apply(this);
     return this;
 };
 
@@ -48,8 +83,8 @@ Recordings.Recording.prototype.getInnerHTML = function () {
     var html = '';
 
     html += '<div class="media-content" id="' + this.id + '">'
-        + '<div class="recording-name">' + this.title + '</div>'
-        + '<div class="recording-short-text">' + this.shortText + '</div>'
+        + '<div class="media-name">' + this.title + '</div>'
+        + '<div class="media-shorttext"><i class="fa fa-chevron-right"></i>&nbsp;' + this.shortText + '</div>'
         + '</div>';
 
     return html;
@@ -88,6 +123,29 @@ Recordings.Recording.prototype.applyFilter = function (token) {
 
         this.element.style.display = '';
     }
+};
+
+Recordings.Recording.prototype.showDescriptionHandler = function (e) {
+
+    var content;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!this.descriptionNode) {
+
+        this.element.classList.add('new');
+        content = this.element.querySelector('.media-content');
+        this.descriptionNode = document.createElement('div');
+        this.descriptionNode.classList.add('media-description');
+        this.descriptionNode.innerText = this.description;
+        content.appendChild(this.descriptionNode);
+        this.descriptionNode.style.maxHeight = 1000 + this.descriptionNode.offsetHeight + 'px';
+        this.element.classList.remove('new');
+    }
+
+
+    this.element.classList.toggle('hide-description');
 };
 
 /**

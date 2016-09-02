@@ -59,10 +59,11 @@ video {
 
 .media-item {
     display: flex;
-    height: calc(15vw - 6px);
-    max-height: 75px;
-    overflow: hidden;
     position: relative;
+    max-height: 15000px;
+}
+.media-item.hide-description {
+    max-height: 75px;
 }
 .media-item:nth-child(odd) {
     background-color: hsla(0,0%,92%,1);
@@ -75,7 +76,7 @@ video {
     margin-right: 6px;
     max-width: 75px;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     display: flex;
 }
 .media-item-logo {
@@ -108,19 +109,34 @@ video {
     font-size: 10px;
 }
 
-.event-shorttext {
+.media-shorttext {
     font-style: italic;
+    cursor: pointer;
 }
 
-.event-description {
-    max-height: 0;
+.media-item,
+.media-description {
+    transition: max-height 500ms ease-out;
+}
+.media-description {
     white-space: pre-wrap;
     overflow: hidden;
-    transition: max-height 1500ms ease-out;
 }
-
-.active .event-description {
-    max-height: 0;
+.media-item.new .media-description,
+.media-item.new .media-shorttext .fa-chevron-right {
+    transition: none;
+    transform: rotate(0deg);
+}
+.hide-description .media-description {
+    max-height: 0 !important;
+}
+.media-shorttext .fa-chevron-right {
+    transition: transform 500ms ease-out;
+    transform: rotate(90deg);
+    color: dimgrey;
+}
+.hide-description .fa-chevron-right {
+    transform: rotate(0deg);
 }
 
 .media-item.active,

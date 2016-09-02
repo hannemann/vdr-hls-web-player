@@ -123,5 +123,6 @@ Channels.Channel.prototype.applyFilter = function (token) {
 Channels.Channel.prototype.remove = function () {
 
     this.removeObserver();
+    this.event.remove();
     this.element.parentNode.removeChild(this.element);
 };

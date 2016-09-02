@@ -16,12 +16,24 @@ var DVBEvent = function (options) {
     this.init();
 };
 
+/**
+ * @type {VDRXMLApi}
+ */
 DVBEvent.prototype = new VDRXMLApi();
 
+/**
+ * @type {string}
+ */
 DVBEvent.prototype.url = 'epg.xml';
 
+/**
+ * @type {string}
+ */
 DVBEvent.prototype.method = 'GET';
 
+/**
+ * initialize
+ */
 DVBEvent.prototype.init = function () {
 
     this.url += '?chid=' + this.channel.id   + '&at=now';
@@ -31,9 +43,36 @@ DVBEvent.prototype.init = function () {
     this.info('initialized');
 };
 
+/**
+ * initialize handler
+ * @return {DVBEvent}
+ */
 DVBEvent.prototype.initHandler = function () {
 
     this.handleReadyState = this.readyStateHandler.bind(this);
+    this.handleShowDescription = this.showDescriptionHandler.bind(this);
+
+    return this;
+};
+
+/**
+ * add event listeners
+ * @return {DVBEvent}
+ */
+DVBEvent.prototype.addObserver = function () {
+
+    this.descriptionButton.addEventListener('click', this.handleShowDescription);
+
+    return this;
+};
+
+/**
+ * remove event listeners
+ * @return {DVBEvent}
+ */
+DVBEvent.prototype.removeObserver = function () {
+
+    this.descriptionButton.addEventListener('click', this.handleShowDescription);
 
     return this;
 };
@@ -54,12 +93,16 @@ DVBEvent.prototype.readyStateHandler = function (e) {
     }
 };
 
+/**
+ * add event data
+ */
 DVBEvent.prototype.addEvent = function () {
 
     if ("undefined" === typeof this.element) {
         this.element = document.createElement('div');
         this.element.classList.add('event');
         this.parentNode.appendChild(this.element);
+        this.parentNode.parentNode.classList.add('new');
     }
 
     this.element.innerHTML = '<span class="event-start">'
@@ -71,17 +114,34 @@ DVBEvent.prototype.addEvent = function () {
         + ' ' + this.getShortText()
         + ' ' + this.getDescription()
     ;
+
+    this.description = this.element.querySelector('.media-description');
+    this.description.style.maxHeight = 1000 + this.description.offsetHeight + 'px';
+    this.parentNode.parentNode.classList.add('hide-description');
+    this.parentNode.parentNode.classList.remove('new');
+
+    this.descriptionButton = this.element.querySelector('.media-shorttext');
+
+    this.addObserver();
 };
 
+/**
+ * retrieve start
+ * @return {string}
+ */
 DVBEvent.prototype.getStart = function () {
 
     var node = this.event.getElementsByTagName('start')[0],
         start = node ? new Date(parseInt(node.textContent, 10) * 1000) : 'NaN',
-        time = 'n.a.';
+        time = 'n.a.', hours, minutes;
 
     if (!isNaN(start)) {
         start = new Date(parseInt(node.textContent, 10) * 1000);
-        time = start.getHours() + ':' + start.getMinutes();
+        hours = start.getHours();
+        minutes = start.getMinutes();
+        hours = hours < 10 ? '0' + hours.toString() : hours.toString();
+        minutes = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+        time = hours + ':' + minutes;
     }
     return time;
 };
@@ -90,11 +150,15 @@ DVBEvent.prototype.getEnd = function () {
 
     var node = this.event.getElementsByTagName('stop')[0],
         stop = node ? new Date(parseInt(node.textContent, 10) * 1000) : 'NaN',
-        time = 'n.a.';
+        time = 'n.a.', hours, minutes;
 
     if (!isNaN(stop)) {
         stop = new Date(parseInt(node.textContent, 10) * 1000);
-        time = stop.getHours() + ':' + stop.getMinutes();
+        hours = stop.getHours();
+        minutes = stop.getMinutes();
+        hours = hours < 10 ? '0' + hours.toString() : hours.toString();
+        minutes = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+        time = hours + ':' + minutes;
     }
 
     return time;
@@ -118,7 +182,7 @@ DVBEvent.prototype.getTitleText = function () {
 
 DVBEvent.prototype.getShortText = function () {
 
-    return '<span class="event-shorttext">' + this.getShortTextText() + '</span>';
+    return '<div class="media-shorttext"><i class="fa fa-chevron-right"></i>&nbsp;' + this.getShortTextText() + '</div>';
 };
 
 DVBEvent.prototype.getShortTextText = function () {
@@ -141,7 +205,7 @@ DVBEvent.prototype.getDescription = function () {
         description = node.textContent;
     }
 
-    return '<div class="event-description">' + description + '</div>';
+    return '<div class="media-description">' + description + '</div>';
 };
 
 DVBEvent.prototype.getDescriptionText = function () {
@@ -160,4 +224,18 @@ DVBEvent.prototype.hasToken = function (token) {
     return this.getTitleText().toLowerCase().indexOf(token) > -1
         || this.getShortTextText().toLowerCase().indexOf(token) > -1
         || this.getDescriptionText().toLowerCase().indexOf(token) > -1;
+};
+
+DVBEvent.prototype.showDescriptionHandler = function (e) {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.parentNode.parentNode.classList.toggle('hide-description');
+};
+
+DVBEvent.prototype.remove = function () {
+
+    this.removeObserver();
+    this.element.parentNode.removeChild(this.element);
 };
