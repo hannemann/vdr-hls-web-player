@@ -9,14 +9,14 @@ Hit the cog symbol to type in your settings
 * Username
 * Password
 * Default preset: the name of the default preset
+
 btw. The settings are saved automatically just go back.
 
 #### Authentication
-Not supported yet in xmlapi please use [my fork](https://github.com/hannemann/vdr-plugin-xmlapi) if you really need it right now.
-Even better: use the [dev branch](https://github.com/nanohcv/vdr-plugin-xmlapi/tree/dev) of xmlapi.
+Not supported yet in xmlapi please use the [dev branch](https://github.com/nanohcv/vdr-plugin-xmlapi/tree/dev) of xmlapi.
 
 #### Landscape mode (small resolutions only)
-To hide channels in landscape mode enter fullscreen
+To hide channels in landscape mode or in desktop browsers enter fullscreen
 
 ## Possible URL-Parameter
 * preset={your preset}
