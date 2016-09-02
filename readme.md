@@ -9,6 +9,7 @@ Hit the cog symbol to type in your settings
 * Username
 * Password
 * Default preset: the name of the default preset
+btw. The settings are saved automatically just go back.
 
 #### Authentication
 Not supported yet in xmlapi please use [my fork](https://github.com/hannemann/vdr-plugin-xmlapi) if you really need it right now.
@@ -33,7 +34,13 @@ My box transcodes live tv at about 30% CPU using a Geforce GT 630
 
 ## Notes on IOS
 since i don't own an ios device its hard for me to test anything if i change something, but i try not to break compatibility.
-I was not able to stream via HTTPS with a self signed certificat or using authentication for now. If you have any ideas about this please contact me. 
+I was not able to stream via HTTPS with a self signed certificat or using authentication for now. If you have any ideas about this please contact me.
+
+# Getting started
+
+Install vdr-plugin-xmlapi as explained on [vdr-plugin-xmlapi](https://github.com/nanohcv/vdr-plugin-xmlapi). Remember to use the dev Branch.
+Make sure that its running and point your Browser to [VDR HLS Stream](https://hannemann.github.io/vdr-hls-web-player/), hit the cog and enter your settings.
+If you like an 'app feeling' on your mobile device you can put it on your homescreen. Next time you can start the website in fullscreen mode.
 
 Have fun
 
