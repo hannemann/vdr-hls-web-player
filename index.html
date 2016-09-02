@@ -9,7 +9,10 @@
 
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <link rel="stylesheet" href="./css/font-awesome-4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/video.css">
+    <link rel="stylesheet" href="./css/default.css">
+    <link rel="stylesheet" href="./css/media.css">
+    <link rel="stylesheet" href="./css/search.css">
+    <link rel="stylesheet" href="./css/controls.css">
     <link rel="stylesheet" href="./css/settings.css">
 
     <script src="./js/hls.js"></script>
@@ -39,6 +42,7 @@
         <div id="controls">
             <div class="control-button" id="stop"><i class="fa fa-stop" aria-hidden="true"></i></div>
             <div class="control-button" id="reload"><i class="fa fa-refresh" aria-hidden="true"></i></div>
+            <div class="control-button hidden" id="toggle-recording-controls"><i class="fa fa-step-forward" aria-hidden="true"></i></div>
             <div class="control-button" id="channels-button"><i class="fa fa-television" aria-hidden="true"></i></div>
             <div class="control-button" id="recordings-button"><i class="fa fa-video-camera" aria-hidden="true"></i></div>
             <div class="control-button" id="search-button"><i class="fa fa-search" aria-hidden="true"></i></div>
@@ -47,7 +51,24 @@
             </div>
             <div class="control-button" id="settings-button"><i class="fa fa-cog" aria-hidden="true"></i></div>
         </div>
-        <div id="search"><input><i class="fa fa-times-circle" aria-hidden="true"></i></div>
+        <div id="search" class="slide-out"><input><i class="fa fa-times-circle" aria-hidden="true"></i></div>
+        <div id="recording-controls" class="slide-out">
+            <select>
+                <option value="2">2s</option>
+                <option value="5">5s</option>
+                <option value="10">10s</option>
+                <option value="30">30s</option>
+                <option value="60">1m</option>
+                <option value="120" selected="selected">2m</option>
+                <option value="300">5m</option>
+                <option value="600">10m</option>
+                <option value="900">15m</option>
+                <option value="1800">30m</option>
+            </select>
+            <i class="fa fa-backward" aria-hidden="true"></i>
+            <span id="recording-current-time">0:00:00</span>
+            <i class="fa fa-forward" aria-hidden="true"></i>
+        </div>
         <div id="channels" class="media-container"></div>
         <div id="recordings" class="media-container"></div>
     </div>

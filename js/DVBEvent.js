@@ -105,7 +105,7 @@ DVBEvent.prototype.addEvent = function () {
         this.parentNode.parentNode.classList.add('new');
     }
 
-    this.element.innerHTML = '<span class="event-start">'
+    this.element.innerHTML = '<span class="media-time">'
         + this.getStart()
         + ' - ' + this.getEnd()
         + '</span>'
@@ -166,7 +166,7 @@ DVBEvent.prototype.getEnd = function () {
 
 DVBEvent.prototype.getTitle = function () {
 
-    return '<span class="event-title">' + this.getTitleText() + '</span>';
+    return '<span class="media-name">' + this.getTitleText() + '</span>';
 };
 
 DVBEvent.prototype.getTitleText = function () {

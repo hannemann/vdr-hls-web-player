@@ -1,0 +1,28 @@
+
+#search input {
+    border: none;
+    border-radius: 6px;
+    outline: none;
+    padding: 0;
+    text-align: center;
+    height: 0;
+}
+#search.active input {
+    flex-basis: 24px;
+    border: 1px solid hsla(220,25%,50%,1);
+    box-shadow: inset 0 0 10px 1px #9c9c9c;
+    padding: 3px;
+    height: auto;
+}
+#search .fa-times-circle {
+    font-size: 0;
+    position: absolute;
+    top: 50%;
+    margin-top: -7px;
+    right: 13px;
+    color: #909090;
+    transition: font-size 100ms ease-out;
+}
+#search.active .fa-times-circle {
+    font-size: 14px;
+}

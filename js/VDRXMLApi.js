@@ -59,9 +59,9 @@ VDRXMLApi.prototype.init = function () {
     VDRXMLApi.prototype.recordings = new Recordings();
     this.presets.init();
     this.search.init();
+    this.hls.init();
     this.channels.init();
     this.recordings.init();
-    this.hls.init();
     this.addObserver();
 };
 

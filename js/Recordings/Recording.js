@@ -1,5 +1,6 @@
 /**
  * @param recording
+ * @param {Recordings} container
  * @constructor
  */
 Recordings.Recording = function (recording, container) {
@@ -75,6 +76,15 @@ Recordings.Recording.prototype.removeObserver = function () {
 };
 
 /**
+ * handle click
+ */
+Recordings.Recording.prototype.clickHandler = function () {
+
+    this.container.currentStartPosition = 0;
+    MediaItem.prototype.clickHandler.apply(this);
+};
+
+/**
  * retrieve inner html
  * @return {string}
  */
@@ -96,7 +106,10 @@ Recordings.Recording.prototype.getInnerHTML = function () {
  */
 Recordings.Recording.prototype.getStreamParameter = function () {
 
-    return "filename=" + encodeURIComponent(this.filename);
+    var start = this.startPosition ? this.startPosition : 0;
+    delete this.startPosition;
+
+    return "filename=" + encodeURIComponent(this.filename) + '&start=' + start;
 };
 
 /**
@@ -125,6 +138,10 @@ Recordings.Recording.prototype.applyFilter = function (token) {
     }
 };
 
+/**
+ * show description
+ * @param {Event} e
+ */
 Recordings.Recording.prototype.showDescriptionHandler = function (e) {
 
     var content;
