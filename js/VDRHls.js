@@ -102,6 +102,7 @@ VDRHls.prototype.getHlsController = function () {
         xhr.open('GET', url, true);
         if (auth) {
             xhr.setRequestHeader("Authorization", auth);
+            xhr.withCredentials = true;
         }
 
     }.bind(this);
