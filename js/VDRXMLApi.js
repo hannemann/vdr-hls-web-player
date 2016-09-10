@@ -229,6 +229,7 @@ VDRXMLApi.prototype.load = function (responseType) {
     }
     if (auth) {
         xhr.setRequestHeader("Authorization", auth);
+        xhr.withCredentials = true;
     }
     xhr.send();
 };
