@@ -17,8 +17,9 @@ Presets.prototype.method = 'GET';
  */
 Presets.prototype.items = {};
 
-Presets.prototype.init = function () {
+Presets.prototype.init = function (callback) {
 
+    this.callback = callback;
     this.className = 'Presets';
     this.handleReadyState = this.readyStateHandler.bind(this);
     this.getElement()
@@ -63,6 +64,7 @@ Presets.prototype.readyStateHandler = function (e) {
         this.info('presets loaded');
         this.addPresets();
         this.hls.setPreset(this.currentPreset);
+        this.callback();
     }
 };
 

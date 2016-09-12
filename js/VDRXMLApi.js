@@ -57,12 +57,13 @@ VDRXMLApi.prototype.init = function () {
     VDRXMLApi.prototype.search = new Search();
     VDRXMLApi.prototype.channels = new Channels();
     VDRXMLApi.prototype.recordings = new Recordings();
-    this.presets.init();
-    this.search.init();
-    this.hls.init();
-    this.channels.init();
-    this.recordings.init();
-    this.addObserver();
+    this.presets.init(function () {
+        this.search.init();
+        this.hls.init();
+        this.channels.init();
+        this.recordings.init();
+        this.addObserver();
+    }.bind(this));
 };
 
 /**

@@ -141,7 +141,7 @@ Settings.prototype.set = function (key, value) {
 
         type = this.availableSettings[key].type;
 
-        if (value) {
+        if (value || value == '') {
             switch (type) {
                 case "string":
                 case "password":
