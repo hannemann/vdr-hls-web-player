@@ -47,6 +47,9 @@ VDRXMLApi.prototype.init = function () {
     VDRXMLApi.prototype.settings = new Settings();
     this.settings.init();
     this.getErrorLevel().getDefaultPreset();
+    this.method = 'GET';
+    this.url = 'version.xml';
+    this.handleReadyState = function () {};
     if (Hls.isSupported()) {
         VDRXMLApi.prototype.hls = new VDRHls();
     } else {
@@ -63,6 +66,7 @@ VDRXMLApi.prototype.init = function () {
         this.channels.init();
         this.recordings.init();
         this.addObserver();
+        this.toggleUpdateCookie();
     }.bind(this));
 };
 
@@ -89,6 +93,71 @@ VDRXMLApi.prototype.addObserver = function () {
 
         setTimeout(this.hls.setDimension.bind(this.hls), 200);
     }.bind(this));
+
+    document.addEventListener('visibilitychange', this.toggleUpdateCookie.bind(this));
+};
+
+VDRXMLApi.prototype.toggleUpdateCookie = function () {
+
+    if ('visible' === document.visibilityState) {
+        this.stopUpdateInterval()
+            .startUpdateInterval();
+    } else {
+        this.stopUpdateInterval();
+    }
+};
+
+/**
+ * start interval to update indicator
+ */
+VDRXMLApi.prototype.startUpdateInterval = function () {
+
+    var d = new Date(),
+        next = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 5, 0);
+
+    if ("undefined" !== typeof this.updateTimeout) {
+        clearTimeout(this.updateTimeout);
+        this.updateTimeout = undefined;
+    }
+
+    this.updateTimeout = setTimeout(function () {
+        this.update();
+        this.updateInterval = setInterval(this.update.bind(this), 300000);
+    }.bind(this), next.getTime() - d.getTime());
+
+};
+
+/**
+ * stop indicator update interval
+ * @returns {VDRXMLApi}
+ */
+VDRXMLApi.prototype.stopUpdateInterval = function () {
+
+    if (this.updateInterval) {
+        clearInterval(this.updateInterval);
+        this.updateInterval = undefined;
+    }
+    if (this.updateTimeout) {
+        clearTimeout(this.updateTimeout);
+        this.updateTimeout = undefined;
+    }
+    return this;
+};
+
+/**
+ * periodical update
+ */
+VDRXMLApi.prototype.update = function () {
+
+    if (this.hasConnection()) {
+
+        this.load();
+    }
+};
+
+VDRXMLApi.prototype.hasConnection = function () {
+
+    return (!navigator.connection || navigator.connection.type != 'none')
 };
 
 /**
