@@ -20,6 +20,10 @@ Settings.prototype.availableSettings = {
     "defaultPreset" : {
         "type":"string",
         "label" : "Default preset"
+    },
+    "defaultAudioPreset" : {
+        "type":"string",
+        "label" : "Default Audio preset"
     }
 };
 

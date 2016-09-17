@@ -37,10 +37,20 @@ HLSAbstract.prototype.addObserver = function () {
  */
 HLSAbstract.prototype.play = function () {
 
+    var preset;
+
     this.currentMedia
         .removeError()
         .addSpinner()
         .setIsActive();
+
+    if (this.currentMedia.isRadio) {
+
+        preset = this.settings.get('defaultAudioPreset');
+        if (preset !== '') {
+            this.setPreset(preset);
+        }
+    }
 };
 
 /**
